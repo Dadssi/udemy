@@ -63,5 +63,5 @@ header('X-Content-Type-Options: nosniff');
 header('X-XSS-Protection: 1; mode=block');
 
 // Initialisation du gestionnaire de session
-sessionManager::init();
+SessionManager::init();
 ?>
