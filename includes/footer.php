@@ -2,7 +2,7 @@
 ?>
 <footer class="w-full bg-primary p-8">
     <div class="flex flex-row flex-wrap items-center justify-center gap-y-6 gap-x-12 text-center text-white md:justify-between">
-        <div class="logo w-1/4">
+        <div class="logo w-1/12">
 			<img src="../public/assets/imgs/logo.png" alt="logo-udemy">
 		</div>
 

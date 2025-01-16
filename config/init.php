@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 
 date_default_timezone_set('Africa/Casablanca');
 
@@ -15,6 +15,9 @@ require_once __DIR__ . '/config.php';
 // constantes globales de l'application :
 define('ROOT_PATH', dirname(__DIR__));
 define('PUBLIC_PATH', ROOT_PATH . '/public');
+define('INCLUDES_PATH', ROOT_PATH . '/includes');
+define('CLASSES_PATH', ROOT_PATH . '/classes');
+define('CONFIG_PATH', ROOT_PATH . '/config');
 define('UPLOAD_PATH', PUBLIC_PATH . '/assets/imgs/uploads');
 // define('MAX_FILE_SIZE', 5 * 1024 * 1024); => 5MB
 

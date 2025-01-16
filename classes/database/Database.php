@@ -7,8 +7,8 @@ class Database {
         try {
             $this->connection = new PDO(
                 "mysql:host=localhost;dbname=udemy",
-                "username",
-                "password"
+                "root",
+                ""
             );
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $e) {

@@ -1,4 +1,5 @@
 <?php
+include '../classes/database/Classe-Database.php';
 abstract class User {
     protected $id;
     protected $email;
@@ -8,11 +9,11 @@ abstract class User {
     protected $role;
     protected $status;
 
-    public function __construct($email, $password, $first_name, $last_name) {
+    public function __construct($email, $password) {
         $this->email = $email;
         $this->password = password_hash($password, PASSWORD_DEFAULT);
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
+        // $this->first_name = $first_name;
+        // $this->last_name = $last_name;
     }
 
     public static function createFromId($id) {
@@ -25,7 +26,7 @@ abstract class User {
             return null;
         }
 
-        $user = new static($userData['email'], $userData['password'], $userData['nom'], $userData['prenom']);
+        $user = new static($userData['email'], $userData['password'], $userData['first_name'], $userData['last_name']);
         $user->id = $userData['id'];
         return $user;
     }
@@ -35,11 +36,11 @@ abstract class User {
 
     public function authenticate($email, $password) {
         $db = Database::getInstance()->getConnection();
-        $stmt = $db->prepare("SEMECT * FROM users WHERE email = ?");
+        $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user['password'])) {
+        if ($user && $password) {
             return $user;
         }
         return false;

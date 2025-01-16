@@ -1,7 +1,9 @@
 <?php
+include 'Classe-User.php';
+
 class Admin extends User {
-    public function __construct($email, $password, $first_name, $last_name) {
-        parent::__construct($email, $password, $first_name, $last_name);
+    public function __construct($email, $password) {
+        parent::__construct($email, $password);
         $this->role = 'admin';
     }
 
