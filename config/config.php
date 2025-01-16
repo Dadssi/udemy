@@ -1,5 +1,5 @@
 <?php
-require_once '../classes/Utils/PageManager.php';
+require_once '../../classes/utils/PageManager.php';
 
 // Définir des valeurs par défaut
 PageManager::setTitle("Page par défaut");

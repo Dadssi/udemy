@@ -1,5 +1,5 @@
 <?php
-include '../classes/database/Classe-Database.php';
+include '../classes/database/Database.php';
 abstract class User {
     protected $id;
     protected $email;

@@ -19,20 +19,20 @@ if (!defined('BASE_PATH')) {
 	// echo PageManager::getDescription();
 	 ?>">
     <!-- Autres balises meta et liens CSS -->
-</head>
-<body>
-    <header>
+<!-- </head> -->
+<!-- <body> -->
+    <!-- <header> -->
         <!-- Votre navigation et autres éléments du header -->
-    </header>
-    <main>
+    <!-- </header> -->
+    <!-- <main> -->
 
 
 	
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- <!DOCTYPE html> -->
+<!-- <html lang="en"> -->
+<!-- <head> -->
+    <!-- <meta charset="UTF-8"> -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -49,7 +49,7 @@ if (!defined('BASE_PATH')) {
         }
       }
     </script>
-    <title>Document</title>
+    <!-- <title>Document</title> -->
 </head>
 <body>
 	<nav class="relative px-4 py-4 flex justify-between items-center bg-primary">
@@ -137,6 +137,7 @@ if (!defined('BASE_PATH')) {
 			</div>
 		</nav>
 	</div>
+	
 
 
 

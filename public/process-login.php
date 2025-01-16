@@ -1,8 +1,7 @@
 <?php
 session_start();
-// require_once '../config/init.php';
-require_once '../classes/users/Classe-Admin.php';
-require_once '../classes/users/Classe-User.php';
+require_once '../classes/users/Admin.php';
+require_once '../classes/users/User.php';
 
 if (isset($_POST["login"])) {
     $email = $_POST['email'] ?? '';
