@@ -1,11 +1,33 @@
 <?php
-include 'User.php';
+require_once '../classes/database/Database.php';
+require_once 'User.php';
 
 class Admin extends User {
     public function __construct($email, $password) {
         parent::__construct($email, $password);
         $this->role = 'admin';
     }
+
+    public function authenticate() {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT * FROM users WHERE email = :email AND role = 'admin'");
+        $stmt->bindParam(':email', $this->email);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && $this->password === $user['password']) {
+            $this->id = $user['id'];
+            $this->role = $user['role'];
+            return $user;
+            // echo $this->password;
+            // echo '<br>';
+            // echo $user['password'];
+            // echo '<pre>';
+            // print_r($user);
+            // echo '</pre>';
+        }
+    }
+    
 
     public function save() {
         $db = Database::getInstance()->getConnection();

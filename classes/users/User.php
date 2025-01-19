@@ -1,5 +1,5 @@
 <?php
-include '../classes/database/Database.php';
+require_once '../classes/database/Database.php';
 abstract class User {
     protected $id;
     protected $email;
@@ -9,9 +9,12 @@ abstract class User {
     protected $role;
     protected $status;
 
+    
+
     public function __construct($email, $password) {
         $this->email = $email;
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
+        // $this->password = password_hash($password, PASSWORD_DEFAULT);
+        $this->password = $password;
         // $this->first_name = $first_name;
         // $this->last_name = $last_name;
     }
@@ -34,16 +37,18 @@ abstract class User {
     abstract public function save();
     abstract public function delete();
 
-    public function authenticate($email, $password) {
-        $db = Database::getInstance()->getConnection();
-        $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    abstract public function authenticate();
 
-        if ($user && $password) {
-            return $user;
-        }
-        return false;
-    }
+    // public function authenticate($email, $password) {
+    //     $db = Database::getInstance()->getConnection();
+    //     $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
+    //     $stmt->execute([$email]);
+    //     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    //     if ($user && $password) {
+    //         return $user;
+    //     }
+    //     return false;
+    // }
 }
 ?>

@@ -1,12 +1,29 @@
 <?php
+require_once '../classes/database/Database.php';
+require_once '../classes/users/User.php';
 class Teacher extends User {
     private $ownCourses = [];
     private $isValidated = false;
 
-    public function __construct($email, $password, $first_name, $last_name)
+    public function __construct($email, $password)
     {
-        parent::__construct($email, $password, $first_name, $last_name);
+        parent::__construct($email, $password);
         $this->role = 'teacher';
+    }
+
+    public function authenticate() {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("SELECT * FROM users WHERE email = :email AND role = 'teacher'");
+        $stmt->bindParam(':email', $this->email);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($this->password, $user['password'])) {
+            $this->id = $user['id'];
+            $this->role = $user['role'];
+            return $user;
+        }
+        return false;
     }
 
     public function save()
