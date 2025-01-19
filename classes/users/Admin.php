@@ -1,5 +1,5 @@
 <?php
-require_once '../classes/database/Database.php';
+require_once '../../classes/database/Database.php';
 require_once 'User.php';
 
 class Admin extends User {
@@ -19,6 +19,18 @@ class Admin extends User {
             $this->id = $user['id'];
             $this->role = $user['role'];
             return $user;
+        }
+    }
+
+    public static function getAllUsers() {
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare("SELECT * FROM users ORDER BY role DESC");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des informations des utilisateurs : " . $e->getMessage();
+            return false;
         }
     }
     
