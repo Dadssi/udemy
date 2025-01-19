@@ -19,12 +19,6 @@ class Admin extends User {
             $this->id = $user['id'];
             $this->role = $user['role'];
             return $user;
-            // echo $this->password;
-            // echo '<br>';
-            // echo $user['password'];
-            // echo '<pre>';
-            // print_r($user);
-            // echo '</pre>';
         }
     }
     

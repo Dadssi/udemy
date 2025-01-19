@@ -53,11 +53,6 @@ if (isset($_POST['login'])) {
         $_SESSION['user_id'] = $authenticatedUser['id'];
         $_SESSION['role'] = $authenticatedUser['role'];
         $_SESSION['email'] = $authenticatedUser['email'];
-        // echo $authenticatedUser['user_id'];
-        // echo $authenticatedUser['role'];
-        // echo $authenticatedUser['email'];
-        // echo $authenticatedUser['first_name'];
-        // echo $authenticatedUser['last_name'];
 
         // Rediriger selon le rôle
         if ($authenticatedUser['role'] === 'admin') {

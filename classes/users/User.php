@@ -38,6 +38,10 @@ abstract class User {
     abstract public function delete();
 
     abstract public function authenticate();
+    
+    public function logout() {
+        session_destroy();
+    }
 
     // public function authenticate($email, $password) {
     //     $db = Database::getInstance()->getConnection();
