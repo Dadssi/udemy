@@ -19,6 +19,7 @@ include '../includes/header.php';
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/style.css">
         <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     </head>
@@ -39,7 +40,7 @@ include '../includes/header.php';
 
 
 
-            <form class="space-y-6" action="process-register.php" method="POST">
+            <form class="space-y-6" action="process-register.php" method="POST" enctype="multipart/form-data">
 
 
                 <div class="input-field relative">
@@ -74,10 +75,46 @@ include '../includes/header.php';
 
 
                 <div class="input-field relative">
-                    <label for="first-name"></label>
+                    <label for="password"></label>
                     <input x-model="password" type="password" id="password" name="password" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 focus:bg-opacity-30 focus:ring-2 focus:ring-purple-300 text-white placeholder-gray-200 transition duration-200" placeholder="Mot de Passe">
                     <i class="fas fa-lock absolute right-3 top-3 text-secondary"></i>
                 </div>
+
+                <!-- <div class="input-field relative">
+                    <label for="photo"></label>
+                    <input x-model="photo" type="file" id="photo" name="photo" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 focus:bg-opacity-30 focus:ring-2 focus:ring-purple-300 text-white placeholder-gray-200 transition duration-200" placeholder="photo">
+                </div> -->
+
+                <!-- <div class="input-field relative">
+                    <label for="photo"></label>
+                    <input x-model="photo" type="file" id="photo" name="photo" required 
+                        class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 focus:bg-opacity-30 focus:ring-2 focus:ring-purple-300 text-white placeholder-gray-200 transition duration-200 file-placeholder">
+                    <span class="placeholder-text absolute top-3 left-4 text-gray-200 pointer-events-none">Photo</span>
+                </div> -->
+
+                <div class="input-field relative">
+                    <!-- Champ de fichier masqué -->
+                    <input 
+                        type="file" 
+                        id="photo" 
+                        name="photo" 
+                        class="hidden-input" 
+                        required 
+                        onchange="updateFileName(this)"
+                    >
+                    
+                    <!-- Bouton personnalisé -->
+                    <label for="photo" class="custom-file-label w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white text-center cursor-pointer hover:bg-opacity-30 focus:ring-2 focus:ring-purple-300">
+                        Ajouter une photo de profil
+                    </label>
+                    
+                    <!-- Texte affichant le nom du fichier sélectionné -->
+                    <span id="file-name" class="file-name text-gray-200 text-sm mt-2 block">
+                        Aucun fichier sélectionné
+                    </span>
+                </div>
+
+
 
 
                 <button type="submit" name="login" class="w-full bg-secondary hover:bg-secondaryhover text-primary font-bold py-3 px-4 rounded-lg hover:opacity-90 focus:ring-4 focus:ring-purple-300 transition duration-300 transform hover:scale-105">
@@ -114,8 +151,29 @@ include '../includes/header.php';
             yoyo: true,
             ease: 'power1.inOut'
         });
+        // ------------------------------------------------------------
+
+        // const fileInput = document.getElementById('photo');
+        // const placeholder = document.querySelector('.placeholder-text');
+
+        // fileInput.addEventListener('change', function () {
+        //     if (this.files && this.files.length > 0) {
+        //         placeholder.style.opacity = '0'; // Masquer le placeholder
+        //     } else {
+        //         placeholder.style.opacity = '1'; // Réafficher si aucun fichier sélectionné
+        //     }
+        // });
+        // ------------------------------------------------------------
+
+        function updateFileName(input) {
+            const fileNameElement = document.getElementById('file-name');
+            if (input.files && input.files.length > 0) {
+                fileNameElement.textContent = input.files[0].name; // Afficher le nom du fichier
+            } else {
+                fileNameElement.textContent = "Aucun fichier sélectionné"; // Réinitialiser si aucun fichier
+            }
+        }
+
     </script>
     </body>
 </html>
-
-

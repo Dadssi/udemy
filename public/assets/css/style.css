@@ -1,0 +1,33 @@
+/* Style du texte de remplacement */
+/* .placeholder-text {
+    font-size: 1rem;
+    color: #ccc;
+    transition: 0.2s;
+} */
+
+/* Masquer le placeholder quand un fichier est sélectionné */
+/* input[type="file"]:not(:placeholder-shown) + .placeholder-text {
+    opacity: 0;
+    transform: translateY(-10px);
+} */
+
+/* Masquer l'input type="file" */
+.hidden-input {
+    display: none;
+}
+
+/* Style pour le label personnalisé */
+.custom-file-label {
+    display: block;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+/* Style pour le nom du fichier */
+.file-name {
+    font-size: 0.875rem;
+    color: #ccc;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+

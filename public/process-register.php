@@ -5,17 +5,17 @@ require_once '../classes/users/Teacher.php';
 require_once '../classes/users/Student.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupérer les données du formulaire
+
     $firstName = trim($_POST['first_name'] ?? '');
     $lastName = trim($_POST['last_name'] ?? '');
     $role = $_POST['role'] ?? '';
     $email = filter_var($_POST['email'] ?? '', FILTER_VALIDATE_EMAIL);
     $password = $_POST['password'] ?? '';
+    $photo = $_FILES['photo'] ?? null;
 
-    // Vérifier les champs requis
-    if (!$firstName || !$lastName || !$email || !$password || !$role) {
-        $_SESSION['error'] = "Tous les champs sont requis.";
-        header('Location: register.php'); // Rediriger vers le formulaire
+    if (!$firstName || !$lastName || !$email || !$password || !$role || !$photo) {
+        $_SESSION['error'] = "Tous les champs sont requis, y compris la photo.";
+        header('Location: register.php');
         exit;
     }
 
@@ -38,16 +38,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    // Vérifier et traiter l'upload de la photo
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+    $uploadDir = '../public/assets/imgs/uploads/';
+    $photoName = basename($photo['name']);
+    $photoTmpName = $photo['tmp_name'];
+    $photoSize = $photo['size'];
+    $photoExtension = strtolower(pathinfo($photoName, PATHINFO_EXTENSION));
+
+    if (!in_array($photoExtension, $allowedExtensions)) {
+        $_SESSION['error'] = "Format de photo invalide. Formats autorisés : jpg, jpeg, png, gif.";
+        header('Location: register.php');
+        exit;
+    }
+
+    if ($photoSize > 2 * 1024 * 1024) { // Limite de 2 Mo
+        $_SESSION['error'] = "La taille de la photo ne doit pas dépasser 2 Mo.";
+        header('Location: register.php');
+        exit;
+    }
+
+    // Générer un nom unique pour la photo et la déplacer
+    $uniquePhotoName = uniqid() . '.' . $photoExtension;
+    $photoPath = $uploadDir . $uniquePhotoName;
+
+    if (!move_uploaded_file($photoTmpName, $photoPath)) {
+        $_SESSION['error'] = "Erreur lors de l'upload de la photo.";
+        header('Location: register.php');
+        exit;
+    }
+
     // Hasher le mot de passe
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Enregistrer l'utilisateur dans la base de données
-    $stmt = $db->prepare("INSERT INTO users (first_name, last_name, email, password, role) VALUES (:first_name, :last_name, :email, :password, :role)");
+    $stmt = $db->prepare("INSERT INTO users (first_name, last_name, email, password, role, photo) VALUES (:first_name, :last_name, :email, :password, :role, :photo)");
     $stmt->bindParam(':first_name', $firstName);
     $stmt->bindParam(':last_name', $lastName);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':password', $hashedPassword);
     $stmt->bindParam(':role', $role);
+    $stmt->bindParam(':photo', $photoPath);
 
     if ($stmt->execute()) {
         // Redirection selon le rôle après inscription réussie
@@ -60,8 +91,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         exit;
     } else {
+        // Supprimer la photo en cas d'échec de l'insertion
+        if (file_exists($photoPath)) {
+            unlink($photoPath);
+        }
+
         $_SESSION['error'] = "Une erreur est survenue. Veuillez réessayer.";
         header('Location: register.php');
         exit;
     }
 }
+?>
+
+
+
+
+
+
+

@@ -15,7 +15,7 @@ class Admin extends User {
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && $this->password === $user['password']) {
+        if ($user && password_verify($this->password, $user['password'])) {
             $this->id = $user['id'];
             $this->role = $user['role'];
             return $user;

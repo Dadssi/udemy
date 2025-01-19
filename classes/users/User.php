@@ -1,5 +1,5 @@
 <?php
-require_once '../classes/database/Database.php';
+
 abstract class User {
     protected $id;
     protected $email;
@@ -15,8 +15,18 @@ abstract class User {
         $this->email = $email;
         // $this->password = password_hash($password, PASSWORD_DEFAULT);
         $this->password = $password;
-        // $this->first_name = $first_name;
-        // $this->last_name = $last_name;
+    }
+
+    public static function getInfoUser($id) {
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare("SELECT * FROM users WHERE id = :id");
+            $stmt->execute(['id' => $id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des informations de l'utilisateur : " . $e->getMessage();
+            return false;
+        }
     }
 
     public static function createFromId($id) {
@@ -38,21 +48,9 @@ abstract class User {
     abstract public function delete();
 
     abstract public function authenticate();
-    
+
     public function logout() {
         session_destroy();
     }
-
-    // public function authenticate($email, $password) {
-    //     $db = Database::getInstance()->getConnection();
-    //     $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
-    //     $stmt->execute([$email]);
-    //     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    //     if ($user && $password) {
-    //         return $user;
-    //     }
-    //     return false;
-    // }
 }
 ?>
