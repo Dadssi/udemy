@@ -4,41 +4,111 @@ require_once '../classes/database/Database.php';
 require_once '../classes/users/Admin.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+    // Récupérer les données du formulaire
     $categoryName = trim($_POST['name'] ?? '');
     $categoryDescription = trim($_POST['description'] ?? '');
 
+    // Vérification des champs obligatoires
     if (!$categoryName || !$categoryDescription) {
-        $_SESSION['error'] = "Vous devez saisir un titre et description de la catégorie à ajouter";
-        header('Location: admin/admin-dachboard.php');
+        $_SESSION['error'] = "Vous devez saisir un titre et une description pour la catégorie.";
+        header('Location: admin/admin-dashboard.php');
         exit;
     }
 
-    $stmt = $db->prepare("INSERT INTO categories (name, description) VALUES (:name, :description)");
-    $stmt->bindParam(':name', $categoruName);
-    $stmt->bindParam(':description', $categoryDescription);
+    try {
+        // Connexion à la base de données
+        $db = Database::getInstance()->getConnection();
 
-    if ($stmt->execute()) {
-        // Redirection selon le rôle après inscription réussie
-        $_SESSION['success'] = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
+        // Insérer la catégorie dans la base de données
+        $stmt = $db->prepare("INSERT INTO categories (name, description) VALUES (:name, :description)");
+        $stmt->bindParam(':name', $categoryName);
+        $stmt->bindParam(':description', $categoryDescription);
 
-        if ($role === 'teacher') {
-            header('Location: teacher/teacher-dashboard.php');
-        } elseif ($role === 'student') {
-            header('Location: student/student-dashboard.php');
+        if ($stmt->execute()) {
+            $_SESSION['success'] = "Catégorie ajoutée avec succès.";
+        } else {
+            $_SESSION['error'] = "Une erreur est survenue lors de l'ajout de la catégorie.";
         }
-        exit;
-    } else {
-        // Supprimer la photo en cas d'échec de l'insertion
-        if (file_exists($photoPath)) {
-            unlink($photoPath);
-        }
-
-        $_SESSION['error'] = "Une erreur est survenue. Veuillez réessayer.";
-        header('Location: register.php');
-        exit;
+    } catch (PDOException $e) {
+        $_SESSION['error'] = "Erreur : " . $e->getMessage();
     }
+
+    header('Location: admin/admin-dashboard.php');
+    exit;
 }
+
+// Charger toutes les catégories pour affichage
+try {
+    $db = Database::getInstance()->getConnection();
+    $query = $db->prepare("SELECT * FROM categories");
+    $query->execute();
+    $categories = $query->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $_SESSION['error'] = "Erreur lors du chargement des catégories : " . $e->getMessage();
+    $categories = [];
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// session_start();
+// require_once '../classes/database/Database.php';
+// require_once '../classes/users/Admin.php';
+
+// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+//     $categoryName = trim($_POST['name'] ?? '');
+//     $categoryDescription = trim($_POST['description'] ?? '');
+
+//     if (!$categoryName || !$categoryDescription) {
+//         $_SESSION['error'] = "Vous devez saisir un titre et description de la catégorie à ajouter";
+//         header('Location: admin/admin-dachboard.php');
+//         exit;
+//     }
+
+//     $db = Database::getInstance()->getConnection();
+
+//     $stmt = $db->prepare("INSERT INTO categories (name, description) VALUES (:name, :description)");
+//     $stmt->bindParam(':name', $categoryName);
+//     $stmt->bindParam(':description', $categoryDescription);
+
+//     $query = $db->prepare("SELECT * FROM categories");
+//     $query->execute();
+//     $query->fetchAll(PDO::FETCH_ASSOC);
+//     header('Location: admin/admin-dachboard.php');
+//     exit;
+   
+// }
 ?>
 
 

@@ -1,5 +1,5 @@
 <?php
-require_once '../../classes/database/Database.php';
+require_once __DIR__."/../database/Database.php";
 require_once 'User.php';
 
 class Admin extends User {
@@ -33,6 +33,28 @@ class Admin extends User {
             return false;
         }
     }
+
+    // -------------------------------------------------------
+     // Méthode pour ajouter une catégorie
+     public function createCategorie($name, $description) {
+        $category = new Category($name, $description);
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare("INSERT INTO categories (name, description) VALUES (:name, :description)");
+            $stmt->bindParam(':name', $categoryName);
+            $stmt->bindParam(':description', $categoryDescription);
+    
+            if ($stmt->execute()) {
+                $_SESSION['success'] = "Catégorie ajoutée avec succès.";
+            } else {
+                $_SESSION['error'] = "Une erreur est survenue lors de l'ajout de la catégorie.";
+            }
+        } catch (PDOException $e) {
+            $_SESSION['error'] = "Erreur : " . $e->getMessage();
+        }
+         return $category;
+     }
+    // -------------------------------------------------------
     
 
     public function save() {

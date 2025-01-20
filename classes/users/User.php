@@ -50,6 +50,8 @@ abstract class User {
     abstract public function authenticate();
 
     public function logout() {
+        session_start();
+        session_unset();
         session_destroy();
     }
 }

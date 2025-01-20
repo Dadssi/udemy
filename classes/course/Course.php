@@ -1,34 +1,33 @@
 <?php
-class Course {
-    private $id;
-    private $title;
-    private $description;
-    private $content;
-    private $teacherId;
-    private $category;
-    private $tags = [];
+abstract class Course {
+    protected $id;
+    protected $title;
+    protected $description;
+    protected $teacherId;
+    protected $category;
+    protected $tags = [];
+    protected $createdAt;
+    protected $updatedAt;
 
-    public function __construct($title, $description, $content, $category) {
+    public function __construct($title, $description, $category) {
         $this->title = $title;
         $this->description = $description;
-        $this->content = $content;
         $this->category = $category;
+        $this->createdAt = date('Y-m-d H:i:s');
+        $this->updatedAt = date('Y-m-d H:i:s');
     }
 
-    public function save() {
-        $db = Database::getInstance()->getConnection();
-        $stmt = $db->prepare("
-        INSERT INTO courses (title, description, content, teacher_id, category)
-        VALUES (?, ?, ?, ?, ?)
-        ");
-        if ($stmt->execute([$this->title, $this->description, $this->content, $this->teacherId, $this->category])) {
-            $this->id = $db->lastInsertId();
-            $this->saveTags();
-            return true;
-        }
-        return false;
-    }
+    // Méthode abstraite qui devra être implémentée par les classes enfants
+    abstract public function display();
+    
+    // Méthode abstraite pour la validation du contenu spécifique
+    abstract protected function validateContent();
 
+    // Getters et setters communs
+    public function getId() { return $this->id; }
+    public function getTitle() { return $this->title; }
+    public function getDescription() { return $this->description; }
+    
     public function setTeacherId($teacherId) {
         $this->teacherId = $teacherId;
     }
@@ -37,54 +36,105 @@ class Course {
         $this->tags[] = $tag;
     }
 
-    private function saveTags() {
-        if (empty($this->tags)) return ;
+    public function save() {
+        if (!$this->validateContent()) {
+            return false;
+        }
+
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare("
+            INSERT INTO courses (title, description, teacher_id, category, course_type, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ");
+        
+        if ($stmt->execute([
+            $this->title,
+            $this->description,
+            $this->teacherId,
+            $this->category,
+            static::class,
+            $this->createdAt,
+            $this->updatedAt
+        ])) {
+            $this->id = $db->lastInsertId();
+            $this->saveTags();
+            $this->saveSpecificContent();
+            return true;
+        }
+        return false;
+    }
+
+    // Méthode abstraite pour sauvegarder le contenu spécifique
+    abstract protected function saveSpecificContent();
+
+    protected function saveTags() {
+        if (empty($this->tags)) return;
 
         $db = Database::getInstance()->getConnection();
         foreach ($this->tags as $tag) {
-            // Insérer ou récupérer l'ID du Tag :
             $stmt = $db->prepare("INSERT IGNORE INTO tags (name) VALUES (?)");
             $stmt->execute([$tag]);
             
-            $tagId = $db->lastInsertId() ?: $db->query("
-            SELECT id 
-            FROM tags 
-            WHERE name = '$tag'
-            ")->fetch()['id'];
+            $tagId = $db->lastInsertId() ?: $db->query("SELECT id FROM tags WHERE name = '$tag'")->fetch()['id'];
 
-            // créer la relation cours-tag
-            $stmt = $db->prepare("
-            INSERT INTO course_tags (course_id, tag_id)
-            VALUES (?, ?)
-            ");
+            $stmt = $db->prepare("INSERT INTO course_tags (course_id, tag_id) VALUES (?, ?)");
             $stmt->execute([$this->id, $tagId]);
         }
     }
-
-    public static function search($keywords, $category = null, $tags = []) {
-        $db = Database::getInstance()->getConnection();
-        $sql = "
-        SELECT DISTINCT c.*
-        FROM courses c
-        LEFT JOIN course_tags ct ON c.id = ct.course_id
-        LEFT JOIN tags t ON ct.tag_id = t.id
-        WHERE (c.title LIKE ? OR c.description LIKE ?)
-        ";
-        $params = ["%$keywords%, %$keywords%"];
-
-        if ($category) {
-            $sql .= "AND c.category = ?";
-            $params[] = $category;
-        }
-        if (!empty($tags)) {
-            $placeholders = str_repeat('?,', count($tags) - 1) . '?';
-            $sql .= "AND t.name IN ($placeholders)";
-            $params = array_merge($params, $tags);
-        }
-
-        $stmt = $db->prepare($sql);
-        $stmt->execute($params);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
 }
-?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
