@@ -4,8 +4,8 @@ class Tag {
     private $name;
     private static $allowedCharachters = '/^[a-zA-Z0-9\-_]+$/';
 
-    public function __construct($name) {
-        $this->setName($name);
+    public function __construct() {
+        // $this->setName();
     }
 
     public function getId() {
@@ -22,6 +22,60 @@ class Tag {
             throw new Exception("Le tag ne peut contenir que des lettres, chiffres, tirets et underscores");
         }
         $this->name = strToLower($name);
+    }
+
+    public function create(array $names) {
+        try {
+            $db = Database::getInstance()->getConnection();
+    
+            $stmt = $db->prepare("INSERT INTO tags (name) VALUES (:name)");
+    
+            $db->beginTransaction();
+    
+            foreach ($names as $name) {
+                $stmt->bindParam(':name', $name);
+                if (!$stmt->execute()) {
+                    // Si un insert échoue, on arrête la transaction
+                    $db->rollBack();
+                    $_SESSION['error'] = "Une erreur est survenue lors de l'ajout des tags.";
+                    return false;
+                }
+            }
+    
+            // Confirmer la transaction si tout s'est bien passé
+            $db->commit();
+            $_SESSION['success'] = "Tous les tags ont été ajoutés avec succès.";
+            return true;
+        } catch (PDOException $e) {
+            // Gérer les erreurs
+            $db->rollBack();
+            $_SESSION['error'] = "Erreur : " . $e->getMessage();
+            return false;
+        }
+    }
+
+    //  // Méthode statique pour récupérer tous les tags :
+    //  public static function getAllTags() {
+    //     $db = Database::getInstance()->getConnection();
+    //     $stmt = $db->prepare("SELECT * FROM tags ORDER BY name");
+    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // }
+    
+
+    public static function getAllTags() {
+        try {
+            $db = Database::getInstance()->getConnection();
+    
+            $stmt = $db->prepare("SELECT * FROM tags ORDER BY NAME");
+            $stmt->execute();
+    
+            $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            return $categories;
+        } catch (PDOException $e) {
+            $_SESSION['error'] = "Erreur lors de la récupération des catégories : " . $e->getMessage();
+            return [];
+        }
     }
 
     public function save() {
@@ -47,12 +101,7 @@ class Tag {
         return $stmt->execute([$this->id]);
     }
 
-    // Méthode statique pour récupérer tous les tags :
-    public static function getAllTags() {
-        $db = Database::getInstance()->getConnection();
-        $stmt = $db->prepare("SELECT * FROM tags ORDER BY name");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+   
 
     // Méthode pour avoir les cours associé à ce tag :
     public function getAssociatedCourses() {

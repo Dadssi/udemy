@@ -2,6 +2,8 @@
 session_start();
 require_once '../../autoload.php';
 require_once '../../classes/users/Admin.php';
+require_once '../../classes/utils/category.php';
+require_once '../../classes/course/Tag.php';
 // require_once '../process-categorie.php';
 // require_once '../../config/config.php';
 // require_once '../../classes/utils/PageManager.php'
@@ -17,6 +19,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 $users = Admin::getAllUsers();
+$categories = Category::getAllCategories();
+$tags = Tag::getAllTags();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -325,12 +329,8 @@ $users = Admin::getAllUsers();
 
 
 
-
-
-
-
                 <!-- GESTION DES CATEGORIES -->
-                <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-6">
+                <div class="w-3/4 mx-auto bg-white rounded-lg shadow-lg p-6 hidden">
                     <h1 class="text-2xl font-bold text-center text-primary mb-6">GESTION DES CATÉGORIES</h1>
                     <form class="space-y-4" method="POST" action="../process-categorie.php">
                         <div>
@@ -351,25 +351,89 @@ $users = Admin::getAllUsers();
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-primary">
                                 <tr>
-                                    <th scope="col" class="w-1/5 px-6 py-3 text-left text-xs font-semi-bold text-gray-500 uppercase tracking-wider">Catégorie</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-semi-bold text-gray-500 uppercase tracking-wider">Description</th>
+                                    <th scope="col" class="w-1/6 px-2  py-3 text-left text-xs font-semi-bold text-gray-500 uppercase tracking-wider">Catégorie</th>
+                                    <th scope="col" class=" py-3 px-2 text-left text-xs font-semi-bold text-gray-500 uppercase tracking-wider">Description</th>
+                                    <th scope="col" class="w-1/5 px-2  py-3 text-left text-xs font-semi-bold text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <?php if (!empty($categories)) : ?>
-                                <?php foreach ($categories as $category) : ?>
-                                <tr>
-                                    <td class="w-1/5 px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= htmlspecialchars($category['name']) ?></td>
-                                    <td class="px-6 py-4 text-sm text-gray-500"><?= htmlspecialchars($category['description']) ?></td>
-                                </tr>
-                                <?php endforeach; ?>
+                                    <?php foreach ($categories as $category) : ?>
+                                        <tr>
+                                            <td class="w-1/6 py-4 px-2 text-sm font-medium text-gray-900"><?= htmlspecialchars($category['name']) ?></td>
+                                            <td class="py-4 px-2 text-sm text-justify text-gray-500"><?= htmlspecialchars($category['description']) ?></td>
+                                            <td class="w-1/5 py-4 px-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                <button class="bg-transparent text-blue-600 font-semibold py-1 px-2 border border-blue-600 rounded hover:bg-blue-50">Modifier</button>
+                                                <button class="bg-transparent text-red-600 font-semibold py-1 px-2 border border-red-600 rounded hover:bg-red-50">Supprimer</button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <tr>
+                                        <td colspan="3" class="px-6 py-4 text-sm text-gray-500">Aucune catégorie disponible.</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
-                        <?php else : ?>
-                            <p>Aucune catégorie disponible.</p>
-                        <?php endif; ?>
                     </div>
                 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- GESTION DES TAGS -->
+                <div class="w-3/4 mx-auto bg-white rounded-lg shadow-lg p-6">
+                    <h1 class="text-2xl font-bold text-center text-primary mb-6">GESTION DES TAGS</h1>
+                    <form id="tagsForm" class="space-y-4" method="POST" action="../process-tag.php">
+                        <!-- Conteneur des champs dynamiques -->
+                        <div id="tagsContainer">
+                            <div class="flex items-center space-x-2">
+                                <input type="text" name="tags[]" placeholder="Nom du tag" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                <button type="button" class="add-tag-btn bg-primary text-white px-2 py-1 rounded-md hover:bg-secondary hover:text-primary focus:outline-none">
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-secondary text-white py-2 px-4 rounded-md hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            Ajouter les Tags
+                        </button>
+                    </form>
+
+                    <!-- Affichage des tags existants -->
+                    <div class="mt-8">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Tags existants</h2>
+                        <div class="p-4 bg-gray-400 rounded-lg shadow-inner">
+                            <?php if (!empty($tags)) : ?>
+                                <div class="flex flex-wrap gap-2">
+                                    <?php foreach ($tags as $tag) : ?>
+                                        <div class="flex items-center bg-white rounded-full px-3 py-1 shadow-sm border border-gray-200">
+                                            <span class="text-sm text-gray-700"><?= htmlspecialchars($tag['name']) ?></span>
+                                            <button class="ml-2 text-red-600 hover:text-red-800 focus:outline-none">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else : ?>
+                                <p class="text-sm text-gray-500">Aucun tag disponible.</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---------------- -->
 
 
 
@@ -609,6 +673,44 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+// ------------------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+    const tagsContainer = document.getElementById('tagsContainer');
+
+    // Fonction pour ajouter un nouveau champ
+    const addTagField = (event) => {
+        const currentButton = event.target;
+        currentButton.textContent = '-';
+        currentButton.className = 'remove-tag-btn bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none';
+
+        // Ajouter un événement pour supprimer le champ
+        currentButton.removeEventListener('click', addTagField);
+        currentButton.addEventListener('click', () => {
+            currentButton.parentElement.remove();
+        });
+
+        // Créer un nouveau champ
+        const div = document.createElement('div');
+        div.className = 'flex items-center space-x-2 mt-2';
+        div.innerHTML = `
+            <input type="text" name="tags[]" placeholder="Nom du tag" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            <button type="button" class="add-tag-btn bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-600 focus:outline-none">
+                +
+            </button>
+        `;
+
+        // Ajouter l'événement pour le nouveau bouton "+"
+        div.querySelector('.add-tag-btn').addEventListener('click', addTagField);
+
+        // Ajouter le nouveau champ dans le conteneur
+        tagsContainer.appendChild(div);
+    };
+
+    // Ajouter l'événement au bouton "+" initial
+    document.querySelector('.add-tag-btn').addEventListener('click', addTagField);
+});
+
+// ------------------------------------------------------------
 </script>
 </body>
 </html>
