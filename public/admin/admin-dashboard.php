@@ -132,7 +132,7 @@ $tags = Tag::getAllTags();
             </nav>
         </div>
         <!-- NAVBAR END -->
-        <div class="">
+        <div class="bg-gray-200">
             <!-- SIDEBAR START -->
             <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                 <span class="sr-only">Open sidebar</span>
@@ -215,10 +215,7 @@ $tags = Tag::getAllTags();
                 </div>
             </aside>
             <!-- SIDEBAR END -->
-            <div class="p-4 sm:ml-72 bg-gray-200">
-
-
-
+            <div class="p-4 sm:ml-72">
                 <!-- GESTION DES UTILISATEURS -->
                 <div id="manage-users" class="section hidden">
                     <div class="p-6 max-w-6xl mx-auto bg-white rounded-lg shadow-lg my-8">
@@ -326,9 +323,6 @@ $tags = Tag::getAllTags();
                         </div>
                     </div>
                 </div>
-
-
-
                 <!-- GESTION DES CATEGORIES -->
                 <div class="w-3/4 mx-auto bg-white rounded-lg shadow-lg p-6 hidden">
                     <h1 class="text-2xl font-bold text-center text-primary mb-6">GESTION DES CATÉGORIES</h1>
@@ -377,22 +371,8 @@ $tags = Tag::getAllTags();
                         </table>
                     </div>
                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 <!-- GESTION DES TAGS -->
-                <div class="w-3/4 mx-auto bg-white rounded-lg shadow-lg p-6">
+                <div class="w-3/4 mx-auto bg-white rounded-lg shadow-lg p-6 ">
                     <h1 class="text-2xl font-bold text-center text-primary mb-6">GESTION DES TAGS</h1>
                     <form id="tagsForm" class="space-y-4" method="POST" action="../process-tag.php">
                         <!-- Conteneur des champs dynamiques -->
@@ -432,286 +412,91 @@ $tags = Tag::getAllTags();
                         </div>
                     </div>
                 </div>
-
-                <!-- ---------------- -->
-
-
-
-
-
-
-
-
-
-
-
-
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-            <div class="grid grid-cols-4 gap-4 mb-4">
-                <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-            </div>
-            <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-                <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                </p>
-            </div>
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-            </div>
-            <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-                <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                </p>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-            </div>
-        </div> -->
-
-
-
-
-
-
-
-
-
-
-    </div>
-
-
-</div>
-<script>
-// Burger menus
-document.addEventListener('DOMContentLoaded', function() {
-    // open
-    const burger = document.querySelectorAll('.navbar-burger');
-    const menu = document.querySelectorAll('.navbar-menu');
-
-    if (burger.length && menu.length) {
-        for (var i = 0; i < burger.length; i++) {
-            burger[i].addEventListener('click', function() {
-                for (var j = 0; j < menu.length; j++) {
-                    menu[j].classList.toggle('hidden');
+        </div>
+<!--------------------------------------------------------------  -------------------------------------------->
+<!--------------------------------------------- PARTIE JAVASCRIPT -------------------------------------------->
+<!--------------------------------------------------------------  -------------------------------------------->
+        <script>
+        // Burger menus
+        document.addEventListener('DOMContentLoaded', function() {
+            // open
+            const burger = document.querySelectorAll('.navbar-burger');
+            const menu = document.querySelectorAll('.navbar-menu');
+
+            if (burger.length && menu.length) {
+                for (var i = 0; i < burger.length; i++) {
+                    burger[i].addEventListener('click', function() {
+                        for (var j = 0; j < menu.length; j++) {
+                            menu[j].classList.toggle('hidden');
+                        }
+                    });
                 }
-            });
-        }
-    }
+            }
 
-    // close
-    const close = document.querySelectorAll('.navbar-close');
-    const backdrop = document.querySelectorAll('.navbar-backdrop');
+            // close
+            const close = document.querySelectorAll('.navbar-close');
+            const backdrop = document.querySelectorAll('.navbar-backdrop');
 
-    if (close.length) {
-        for (var i = 0; i < close.length; i++) {
-            close[i].addEventListener('click', function() {
-                for (var j = 0; j < menu.length; j++) {
-                    menu[j].classList.toggle('hidden');
+            if (close.length) {
+                for (var i = 0; i < close.length; i++) {
+                    close[i].addEventListener('click', function() {
+                        for (var j = 0; j < menu.length; j++) {
+                            menu[j].classList.toggle('hidden');
+                        }
+                    });
                 }
-            });
-        }
-    }
+            }
 
-    if (backdrop.length) {
-        for (var i = 0; i < backdrop.length; i++) {
-            backdrop[i].addEventListener('click', function() {
-                for (var j = 0; j < menu.length; j++) {
-                    menu[j].classList.toggle('hidden');
+            if (backdrop.length) {
+                for (var i = 0; i < backdrop.length; i++) {
+                    backdrop[i].addEventListener('click', function() {
+                        for (var j = 0; j < menu.length; j++) {
+                            menu[j].classList.toggle('hidden');
+                        }
+                    });
                 }
-            });
-        }
-    }
-});
-// ------------------------------------------------------------
-document.addEventListener('DOMContentLoaded', () => {
-    const tagsContainer = document.getElementById('tagsContainer');
+            }
+        });
+        // ------------------------------------------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            const tagsContainer = document.getElementById('tagsContainer');
 
-    // Fonction pour ajouter un nouveau champ
-    const addTagField = (event) => {
-        const currentButton = event.target;
-        currentButton.textContent = '-';
-        currentButton.className = 'remove-tag-btn bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none';
+            // Fonction pour ajouter un nouveau champ
+            const addTagField = (event) => {
+                const currentButton = event.target;
+                currentButton.textContent = '-';
+                currentButton.className = 'remove-tag-btn bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none';
 
-        // Ajouter un événement pour supprimer le champ
-        currentButton.removeEventListener('click', addTagField);
-        currentButton.addEventListener('click', () => {
-            currentButton.parentElement.remove();
+                // Ajouter un événement pour supprimer le champ
+                currentButton.removeEventListener('click', addTagField);
+                currentButton.addEventListener('click', () => {
+                    currentButton.parentElement.remove();
+                });
+
+                // Créer un nouveau champ
+                const div = document.createElement('div');
+                div.className = 'flex items-center space-x-2 mt-2';
+                div.innerHTML = `
+                    <input type="text" name="tags[]" placeholder="Nom du tag" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    <button type="button" class="add-tag-btn bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-600 focus:outline-none">
+                        +
+                    </button>
+                `;
+
+                // Ajouter l'événement pour le nouveau bouton "+"
+                div.querySelector('.add-tag-btn').addEventListener('click', addTagField);
+
+                // Ajouter le nouveau champ dans le conteneur
+                tagsContainer.appendChild(div);
+            };
+
+            // Ajouter l'événement au bouton "+" initial
+            document.querySelector('.add-tag-btn').addEventListener('click', addTagField);
         });
 
-        // Créer un nouveau champ
-        const div = document.createElement('div');
-        div.className = 'flex items-center space-x-2 mt-2';
-        div.innerHTML = `
-            <input type="text" name="tags[]" placeholder="Nom du tag" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-            <button type="button" class="add-tag-btn bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-600 focus:outline-none">
-                +
-            </button>
-        `;
-
-        // Ajouter l'événement pour le nouveau bouton "+"
-        div.querySelector('.add-tag-btn').addEventListener('click', addTagField);
-
-        // Ajouter le nouveau champ dans le conteneur
-        tagsContainer.appendChild(div);
-    };
-
-    // Ajouter l'événement au bouton "+" initial
-    document.querySelector('.add-tag-btn').addEventListener('click', addTagField);
-});
-
-// ------------------------------------------------------------
-</script>
-</body>
+        // ------------------------------------------------------------
+        </script>
+    </body>
 </html>
 

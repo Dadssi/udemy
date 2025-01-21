@@ -57,6 +57,16 @@ CREATE TABLE course_tags (
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
     FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
 );
+-- ------------------------------------------------------------------
+CREATE TABLE `course_tags` (
+  `course_id` int(11) NOT NULL,
+  `tag_id` int(11) NOT NULL,
+  PRIMARY KEY (`course_id`,`tag_id`),
+  KEY `tag_id` (`tag_id`),
+  CONSTRAINT `course_tags_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `course_tags_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+-- ------------------------------------------------------------------
 
 -- Table des inscriptions aux cours (Many-to-Many)
 CREATE TABLE inscriptions (

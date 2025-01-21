@@ -1,47 +1,32 @@
 <?php
 class DocumentCourse extends Course {
-    private $documentPath;
+    private $documentUrl;
 
-    public function __construct($title, $description, $category, $documentPath) {
-        parent::__construct($title, $description, $category);
-        $this->documentPath = $documentPath;
+    public function __construct($title, $description, $categoryId, $documentUrl) {
+        parent::__construct($title, $description, $categoryId);
+        $this->documentUrl = $documentUrl;
     }
 
     public function display() {
+        // Démonstration du polymorphisme : affichage spécifique pour les documents
         return "
             <div class='document-course'>
                 <h2>{$this->title}</h2>
                 <div class='document-viewer'>
-                    <iframe src='{$this->documentPath}' width='100%' height='600px'></iframe>
+                    <iframe src='{$this->documentUrl}' width='100%' height='600px'></iframe>
                 </div>
-                <div class='course-info'>
-                    <p class='description'>{$this->description}</p>
-                    <a href='{$this->documentPath}' class='btn btn-primary' download>
-                        Télécharger le PDF
-                    </a>
-                </div>
+                <p>{$this->description}</p>
+                <a href='{$this->documentUrl}' class='btn btn-primary' target='_blank'>
+                    Voir le PDF
+                </a>
             </div>";
     }
 
-    protected function validateContent() {
-        if (!file_exists($this->documentPath)) {
-            return false;
-        }
-        
-        $fileInfo = pathinfo($this->documentPath);
-        return strtolower($fileInfo['extension']) === 'pdf';
-    }
-
-    protected function saveSpecificContent() {
-        $db = Database::getInstance()->getConnection();
-        $stmt = $db->prepare("
-            INSERT INTO document_courses (course_id, document_path)
-            VALUES (?, ?)
-        ");
-        return $stmt->execute([
-            $this->id,
-            $this->documentPath
-        ]);
+    protected function getContent() {
+        return [
+            'video_source' => null,
+            'content' => $this->documentUrl
+        ];
     }
 }
 ?>

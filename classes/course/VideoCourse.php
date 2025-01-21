@@ -2,13 +2,13 @@
 class VideoCourse extends Course {
     private $videoUrl;
 
-    public function __construct($title, $description, $category, $videoUrl) {
-        parent::__construct($title, $description, $category);
+    public function __construct($title, $description, $categoryId, $videoUrl) {
+        parent::__construct($title, $description, $categoryId);
         $this->videoUrl = $videoUrl;
     }
 
     public function display() {
-        // Extraction de l'ID de la vidéo YouTube depuis l'URL
+        // Démonstration du polymorphisme : affichage spécifique pour les vidéos
         $videoId = $this->getYoutubeVideoId($this->videoUrl);
         
         return "
@@ -23,9 +23,7 @@ class VideoCourse extends Course {
                         allowfullscreen>
                     </iframe>
                 </div>
-                <div class='course-info'>
-                    <p class='description'>{$this->description}</p>
-                </div>
+                <p>{$this->description}</p>
             </div>";
     }
 
@@ -35,22 +33,22 @@ class VideoCourse extends Course {
         return isset($matches[1]) ? $matches[1] : '';
     }
 
-    protected function validateContent() {
-        return filter_var($this->videoUrl, FILTER_VALIDATE_URL) 
-            && $this->getYoutubeVideoId($this->videoUrl) !== '';
+    // protected function saveContent() {
+    //     $db = Database::getInstance()->getConnection();
+    //     $stmt = $db->prepare("
+    //         INSERT INTO video_courses (course_id, video_url)
+    //         VALUES (?, ?)
+    //     ");
+    //     return $stmt->execute([$this->id, $this->videoUrl]);
+    // }
+
+
+    protected function getContent() {
+        return [
+            'video_source' => $this->videoUrl,
+            'content' => null
+        ];
     }
 
-    protected function saveSpecificContent() {
-        $db = Database::getInstance()->getConnection();
-        $stmt = $db->prepare("
-            INSERT INTO video_courses (course_id, video_url)
-            VALUES (?, ?)
-        ");
-        return $stmt->execute([
-            $this->id,
-            $this->videoUrl
-        ]);
-    }
 }
-
 ?>

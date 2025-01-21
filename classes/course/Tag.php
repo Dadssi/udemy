@@ -5,7 +5,6 @@ class Tag {
     private static $allowedCharachters = '/^[a-zA-Z0-9\-_]+$/';
 
     public function __construct() {
-        // $this->setName();
     }
 
     public function getId() {
@@ -54,14 +53,6 @@ class Tag {
         }
     }
 
-    //  // Méthode statique pour récupérer tous les tags :
-    //  public static function getAllTags() {
-    //     $db = Database::getInstance()->getConnection();
-    //     $stmt = $db->prepare("SELECT * FROM tags ORDER BY name");
-    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // }
-    
-
     public static function getAllTags() {
         try {
             $db = Database::getInstance()->getConnection();
@@ -100,8 +91,6 @@ class Tag {
         $stmt = $db->prepare("DELETE FROM tags WHERE id = ?");
         return $stmt->execute([$this->id]);
     }
-
-   
 
     // Méthode pour avoir les cours associé à ce tag :
     public function getAssociatedCourses() {
