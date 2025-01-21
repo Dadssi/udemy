@@ -33,16 +33,6 @@ class VideoCourse extends Course {
         return isset($matches[1]) ? $matches[1] : '';
     }
 
-    // protected function saveContent() {
-    //     $db = Database::getInstance()->getConnection();
-    //     $stmt = $db->prepare("
-    //         INSERT INTO video_courses (course_id, video_url)
-    //         VALUES (?, ?)
-    //     ");
-    //     return $stmt->execute([$this->id, $this->videoUrl]);
-    // }
-
-
     protected function getContent() {
         return [
             'video_source' => $this->videoUrl,

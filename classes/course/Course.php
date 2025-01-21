@@ -13,11 +13,8 @@ abstract class Course {
         $this->title = $title;
         $this->description = $description;
         $this->categoryId = $categoryId;
-        // $this->createdAt = date('Y-m-d H:i:s');
-        // $this->updatedAt = date('Y-m-d H:i:s');
     }
 
-    // Méthode abstraite pour démontrer le polymorphisme
     abstract public function display();
 
     public function setTeacherId($teacherId) {
