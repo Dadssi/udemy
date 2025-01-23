@@ -1,32 +1,32 @@
 <?php
-// session_start();
+
 
 date_default_timezone_set('Africa/Casablanca');
 
-// Activation de l'affichage des erreurs :
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Inclusion de l'autoloader :
+
 require_once __DIR__ . '/../autoload.php';
-// Inclusion du fichier de configuration :
+
 require_once __DIR__ . '/config.php';
 
-// constantes globales de l'application :
+
 define('ROOT_PATH', dirname(__DIR__));
 define('PUBLIC_PATH', ROOT_PATH . '/public');
 define('INCLUDES_PATH', ROOT_PATH . '/includes');
 define('CLASSES_PATH', ROOT_PATH . '/classes');
 define('CONFIG_PATH', ROOT_PATH . '/config');
 define('UPLOAD_PATH', PUBLIC_PATH . '/assets/imgs/uploads');
-// define('MAX_FILE_SIZE', 5 * 1024 * 1024); => 5MB
 
-// constantes pour les rôles utilisateurs :
+
+
 define('ROLE_ADMIN', 'admin');
 define('ROLE_TEACHER', 'teacher');
 define('ROLE_STUDENT', 'student');
 
-// fonctions utilitaires de base :
+
 function redirect($path) {
     header("Location: " . $path);
     exit();
@@ -60,11 +60,11 @@ function getCurrentUser() {
     }
 }
 
-// configuration des headers de sécurité
+
 header('X_Frame-options : DENY');
 header('X-Content-Type-Options: nosniff');
 header('X-XSS-Protection: 1; mode=block');
 
-// Initialisation du gestionnaire de session
+
 SessionManager::init();
 ?>

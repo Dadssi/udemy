@@ -7,10 +7,6 @@ PageManager::setTitle("Login");
 PageManager::setDescription("page d'authentification à la plateforme Udemy");
 include '../includes/header.php';
 
-// ---------------------------------------
-
-
-// ---------------------------------------
 ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -80,20 +76,8 @@ include '../includes/header.php';
                     <i class="fas fa-lock absolute right-3 top-3 text-secondary"></i>
                 </div>
 
-                <!-- <div class="input-field relative">
-                    <label for="photo"></label>
-                    <input x-model="photo" type="file" id="photo" name="photo" required class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 focus:bg-opacity-30 focus:ring-2 focus:ring-purple-300 text-white placeholder-gray-200 transition duration-200" placeholder="photo">
-                </div> -->
-
-                <!-- <div class="input-field relative">
-                    <label for="photo"></label>
-                    <input x-model="photo" type="file" id="photo" name="photo" required 
-                        class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 focus:bg-opacity-30 focus:ring-2 focus:ring-purple-300 text-white placeholder-gray-200 transition duration-200 file-placeholder">
-                    <span class="placeholder-text absolute top-3 left-4 text-gray-200 pointer-events-none">Photo</span>
-                </div> -->
-
                 <div class="input-field relative">
-                    <!-- Champ de fichier masqué -->
+             
                     <input 
                         type="file" 
                         id="photo" 
@@ -103,31 +87,22 @@ include '../includes/header.php';
                         onchange="updateFileName(this)"
                     >
                     
-                    <!-- Bouton personnalisé -->
+        
                     <label for="photo" class="custom-file-label w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white text-center cursor-pointer hover:bg-opacity-30 focus:ring-2 focus:ring-purple-300">
                         Ajouter une photo de profil
                     </label>
                     
-                    <!-- Texte affichant le nom du fichier sélectionné -->
+       
                     <span id="file-name" class="file-name text-gray-200 text-sm mt-2 block">
                         Aucun fichier sélectionné
                     </span>
                 </div>
-
-
-
 
                 <button type="submit" name="login" class="w-full bg-secondary hover:bg-secondaryhover text-primary font-bold py-3 px-4 rounded-lg hover:opacity-90 focus:ring-4 focus:ring-purple-300 transition duration-300 transform hover:scale-105">
                     S'inscrire
                     <i class="fas fa-arrow-right ml-2"></i>
                 </button>
             </form>
-
-
-
-
-
-
 
             <p class="text-white text-center mt-6">Bienvenue à Udemy</p>
             
@@ -151,19 +126,7 @@ include '../includes/header.php';
             yoyo: true,
             ease: 'power1.inOut'
         });
-        // ------------------------------------------------------------
-
-        // const fileInput = document.getElementById('photo');
-        // const placeholder = document.querySelector('.placeholder-text');
-
-        // fileInput.addEventListener('change', function () {
-        //     if (this.files && this.files.length > 0) {
-        //         placeholder.style.opacity = '0'; // Masquer le placeholder
-        //     } else {
-        //         placeholder.style.opacity = '1'; // Réafficher si aucun fichier sélectionné
-        //     }
-        // });
-        // ------------------------------------------------------------
+       
 
         function updateFileName(input) {
             const fileNameElement = document.getElementById('file-name');

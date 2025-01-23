@@ -1,10 +1,10 @@
 <?php
-// require_once '../autoload.php';
+
 require_once __DIR__ . '/autoload.php';
 
 require_once '../config/config.php';
 
-// Définir les propriétés pour cette page
+
 PageManager::setTitle("Accueil");
 PageManager::setDescription("Udemy est le meuilleure endroit d'apprentissage en ligne");
 ?>

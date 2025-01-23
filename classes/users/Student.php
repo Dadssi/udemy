@@ -42,21 +42,34 @@ class Student extends User {
         return $stmt->execute([$this->id]);
     }
 
-    public function subscribeInCourse($courseId) {
+    public function registerForCourse($courseId) {
         $db = Database::getInstance()->getConnection();
+    
         $stmt = $db->prepare("
-        INSERT INTO inscriptions (student_id, course_id) VALUES (?, ?)
+            SELECT COUNT(*) FROM enrolled_courses 
+            WHERE course_id = ? AND student_id = ?
         ");
-        return $stmt->execute([$this->id, $courseId]);
+        $stmt->execute([$courseId, $this->id]);
+        if ($stmt->fetchColumn() > 0) {
+            return false; //msajjal b3da
+        }
+    
+        $stmt = $db->prepare("
+            INSERT INTO enrolled_courses (course_id, student_id, enrolled_at) 
+            VALUES (?, ?, NOW())
+        ");
+        if ($stmt->execute([$courseId, $this->id])) {
+            return true; // ok
+        }
+    
+        return false; 
     }
-
+    
     public function getsubscribedCourses() {
         $db = Database::getInstance()->getConnection();
         $stmt = $db->prepare("SELECT c.* FROM courses c JOIN inscriptions i ON c.id = i.course_id WHERE i.student_id = ?");
         $stmt->execute([$this->id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
 }
 ?>

@@ -7,18 +7,18 @@ class DocumentCourse extends Course {
         $this->documentUrl = $documentUrl;
     }
 
+    public function toArray() {
+        $baseData = parent::toArray();
+        $baseData['type'] = 'pdf';
+        $baseData['document_url'] = $this->documentUrl;
+        return $baseData;
+    }
+
     public function display() {
-        // Démonstration du polymorphisme : affichage spécifique pour les documents
         return "
             <div class='document-course'>
                 <h2>{$this->title}</h2>
-                <div class='document-viewer'>
-                    <iframe src='{$this->documentUrl}' width='100%' height='600px'></iframe>
-                </div>
-                <p>{$this->description}</p>
-                <a href='{$this->documentUrl}' class='btn btn-primary' target='_blank'>
-                    Voir le PDF
-                </a>
+                <iframe src='{$this->documentUrl}'></iframe>
             </div>";
     }
 

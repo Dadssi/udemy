@@ -3,15 +3,10 @@ session_start();
 require_once '../../classes/database/Database.php';
 require_once '../../classes/users/User.php';
 require_once '../../classes/course/Tag.php';
+require_once '../../classes/course/Course.php';
 require_once '../../classes/utils/Category.php';
-// require_once '../../autoload.php';
-// require_once '../../config/config.php';
-// require_once '../../classes/utils/PageManager.php'
+require_once '../../classes/users/Teacher.php';
 
-// PageManager::setTitle("Admin-Tableau de bord");
-// PageManager::setDescription("Tableau de Bord de l'Administrateur UDEMY");
-
-// include '../../includes/header.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
     header('Location: ../login.php');
@@ -23,6 +18,12 @@ $userInfo = User::getInfoUser($userId);
 $categories = Category::getAllCategories();
 
 $tags = Tag::getAllTags();
+
+$courses = Course::getAllCourses();
+
+$teacher = new Teacher('', '');
+
+
 
 ?>
 <!DOCTYPE html>
@@ -47,14 +48,14 @@ $tags = Tag::getAllTags();
             }
         </script>
         <style>
-        @keyframes fadeIn {
+            @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
+            }
+            .animate-fade-in {
             animation: fadeIn 0.5s ease-out forwards;
-        }
-    </style>
+            }
+        </style>
         <title>Document</title>
     </head>
     <body>
@@ -152,7 +153,9 @@ $tags = Tag::getAllTags();
                         <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                     </svg>
             </button>
-            <aside id="default-sidebar" class="fixed top-0 left-0 w-72 h-full transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+            <aside id="default-sidebar" class="fixed top-0 left-0 w-72 h-full z-50 transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+
+                <!-- <aside id="default-sidebar" class="fixed top-0 left-0 w-72 h-full transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar"> -->
                 <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-primary">
                     <ul class="space-y-2 font-medium">
                         <li>
@@ -161,7 +164,7 @@ $tags = Tag::getAllTags();
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <a href="#" class="btn-toggle flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group" data-target="my-profile">
                             <svg class="w-5 h-5 text-secondary transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5Zm0 2c-3.315 0-10 1.672-10 5v2h20v-2c0-3.328-6.685-5-10-5Z"/>
                             </svg>
@@ -169,7 +172,7 @@ $tags = Tag::getAllTags();
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <a href="#" class="btn-toggle flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group" data-target="my-courses">
                             <svg class="flex-shrink-0 w-5 h-5 text-secondary transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
                                 <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
                             </svg>
@@ -177,7 +180,7 @@ $tags = Tag::getAllTags();
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <a href="#" class="btn-toggle flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group" data-target="add-course">
                             <svg class="flex-shrink-0 w-5 h-5 text-secondary transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
                                 <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z"/>
@@ -187,7 +190,7 @@ $tags = Tag::getAllTags();
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <a href="#" class="btn-toggle flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group" data-target="statistics">
                             <svg class="w-5 h-5 text-secondary transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                                 <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
                                 <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
@@ -228,11 +231,11 @@ $tags = Tag::getAllTags();
             <!-- SIDEBAR END -->
             <div class="p-4 sm:ml-72">
                 <!-- MON PROFILE START -->
-                <div class="hidden bg-white dark:bg-primary rounded-xl shadow-2xl w-full p-8 transition-all duration-300 animate-fade-in">
+                <div id="my-profile" class=" content-div hidden bg-white dark:bg-primary rounded-xl shadow-2xl w-full p-8 transition-all duration-300 animate-fade-in">
                     <div class="flex flex-col md:flex-row">
                         <div class="md:w-1/3 text-center mb-8 md:mb-0">
                             <img src="../<?php echo htmlspecialchars($userInfo['photo']) ?>" alt="<?php echo htmlspecialchars($userInfo['last_name']) ?>" class="rounded-full w-48 h-48 mx-auto mb-4 border-4 border-indigo-800 dark:border-secondary transition-transform duration-300 hover:scale-105">
-                            <h1 class="text-2xl font-bold text-indigo-800 dark:text-white mb-2"><?php echo htmlspecialchars($userInfo['first_name']) ?></h1>
+                            <h1 class="text-2xl font-bold text-indigo-800 dark:text-white mb-2"><?php echo htmlspecialchars($userInfo['first_name']) . ' ' . htmlspecialchars($userInfo['last_name']) ?></h1>
                             <p class="text-gray-600 dark:text-gray-300"><?php echo htmlspecialchars($userInfo['role']) ?></p>
                             <button class="mt-4 bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300">Modifier Profile</button>
                         </div>
@@ -277,41 +280,33 @@ $tags = Tag::getAllTags();
                 </div>
                 <!-- MON PROFILE END -->
                 <!-- MES COURS START -->
-                <div class="container mx-auto p-6">
+                <div id="my-courses" class=" content-div hidden container mx-auto p-6">
+                    <?php if (empty($courses)) : ?>
+                        <div class="w-full bg-red-500 rounded-lg p-16 text-white fond-bold">
+                            <h2 class="text-center text-lg">Vous n'avez pas encore ajouté de cours :\</h2>
+                        </div>
+                    <?php else : ?>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Carte de cours -->
-                        <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
-                            <!-- Image de couverture -->
-                            <div class="relative h-48">
-                                <img src="/api/placeholder/400/320" alt="Course thumbnail" class="w-full h-full object-cover"/>
-                                <!-- Badge nombre d'étudiants -->
-                                <div class="absolute top-4 right-4 bg-secondary backdrop-blur-sm px-3 py-1 rounded-full shadow-md flex items-center space-x-2">
+                        <?php foreach ($courses as $course) : ?>
+                        <div class="bg-red-300 h-96 rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+                            <div class="relative h-[8%]">
+                                <div class="absolute top-2 right-4 bg-secondary backdrop-blur-sm px-3 py-1 rounded-full shadow-md flex items-center space-x-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
                                     </svg>
                                     <span class="text-sm font-semibold text-navy">238</span>
                                 </div>
                             </div>
-                            
-                            <!-- Contenu de la carte -->
-                            <div class="p-6">
-                                <!-- En-tête avec titre -->
-                                <div class="flex items-start justify-between mb-4">
-                                    <h3 class="text-xl font-bold text-primary truncate">Introduction au Design System</h3>
+                            <iframe class="w-[90%] mx-auto" src='<?php echo htmlspecialchars($course['video_source']) ?>'></iframe>
+                            <div class="p-4">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="text-md font-bold text-primary truncate"><?php echo htmlspecialchars($course['title']) ?></h3>
                                 </div>
-                                
-                                <!-- Description -->
-                                <p class="text-gray-600 text-sm mb-6 line-clamp-2">
-                                    Apprenez les fondamentaux du design system et comment l'implémenter dans vos projets web modernes.
-                                </p>
-                                
-                                <!-- Informations du professeur -->
-                                <div class="flex items-center mb-6">
-                                    <img src="/api/placeholder/32/32" alt="Teacher" class="h-8 w-8 rounded-full ring-2 ring-primary"/>
-                                    <span class="ml-2 text-sm font-medium text-navy">Prof. Sarah Martin</span>
+                                <p class="text-gray-600 text-sm mb-1 line-clamp-2"><?php echo htmlspecialchars($course['description']) ?></p>
+                                <div class="flex items-center mb-2">
+                                    <img src="../<?php echo htmlspecialchars($userInfo['photo']) ?>" alt="<?php echo htmlspecialchars($userInfo['first_name']) . ' ' . htmlspecialchars($userInfo['last_name']) ?>" class="h-8 w-8 rounded-full ring-2 ring-primary"/>
+                                    <span class="ml-2 text-sm font-medium text-navy"><?php echo htmlspecialchars($userInfo['first_name']) . ' ' . htmlspecialchars($userInfo['last_name']) ?></span>
                                 </div>
-
-                                <!-- Bouton d'inscription -->
                                 <button class="w-full px-4 py-2 bg-secondary text-primary rounded-lg 
                                             transform transition duration-300 hover:from-mustard hover:to-mustard-dark 
                                             hover:shadow-lg focus:ring-2 focus:ring-mustard focus:ring-opacity-50">
@@ -319,95 +314,14 @@ $tags = Tag::getAllTags();
                                 </button>
                             </div>
                         </div>
-
-
-                        <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
-                            <!-- Image de couverture -->
-                            <div class="relative h-48">
-                                <img src="/api/placeholder/400/320" alt="Course thumbnail" class="w-full h-full object-cover"/>
-                                <!-- Badge nombre d'étudiants -->
-                                <div class="absolute top-4 right-4 bg-secondary backdrop-blur-sm px-3 py-1 rounded-full shadow-md flex items-center space-x-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
-                                    </svg>
-                                    <span class="text-sm font-semibold text-navy">238</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Contenu de la carte -->
-                            <div class="p-6">
-                                <!-- En-tête avec titre -->
-                                <div class="flex items-start justify-between mb-4">
-                                    <h3 class="text-xl font-bold text-primary truncate">Introduction au Design System</h3>
-                                </div>
-                                
-                                <!-- Description -->
-                                <p class="text-gray-600 text-sm mb-6 line-clamp-2">
-                                    Apprenez les fondamentaux du design system et comment l'implémenter dans vos projets web modernes.
-                                </p>
-                                
-                                <!-- Informations du professeur -->
-                                <div class="flex items-center mb-6">
-                                    <img src="/api/placeholder/32/32" alt="Teacher" class="h-8 w-8 rounded-full ring-2 ring-primary"/>
-                                    <span class="ml-2 text-sm font-medium text-navy">Prof. Sarah Martin</span>
-                                </div>
-
-                                <!-- Bouton d'inscription -->
-                                <button class="w-full px-4 py-2 bg-secondary text-primary rounded-lg 
-                                            transform transition duration-300 hover:from-mustard hover:to-mustard-dark 
-                                            hover:shadow-lg focus:ring-2 focus:ring-mustard focus:ring-opacity-50">
-                                    S'inscrire au cours
-                                </button>
-                            </div>
-                        </div>
-
-
-                        <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
-                            <!-- Image de couverture -->
-                            <div class="relative h-48">
-                                <img src="/api/placeholder/400/320" alt="Course thumbnail" class="w-full h-full object-cover"/>
-                                <!-- Badge nombre d'étudiants -->
-                                <div class="absolute top-4 right-4 bg-secondary backdrop-blur-sm px-3 py-1 rounded-full shadow-md flex items-center space-x-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
-                                    </svg>
-                                    <span class="text-sm font-semibold text-navy">238</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Contenu de la carte -->
-                            <div class="p-6">
-                                <!-- En-tête avec titre -->
-                                <div class="flex items-start justify-between mb-4">
-                                    <h3 class="text-xl font-bold text-primary truncate">Introduction au Design System</h3>
-                                </div>
-                                
-                                <!-- Description -->
-                                <p class="text-gray-600 text-sm mb-6 line-clamp-2">
-                                    Apprenez les fondamentaux du design system et comment l'implémenter dans vos projets web modernes.
-                                </p>
-                                
-                                <!-- Informations du professeur -->
-                                <div class="flex items-center mb-6">
-                                    <img src="/api/placeholder/32/32" alt="Teacher" class="h-8 w-8 rounded-full ring-2 ring-primary"/>
-                                    <span class="ml-2 text-sm font-medium text-navy">Prof. Sarah Martin</span>
-                                </div>
-
-                                <!-- Bouton d'inscription -->
-                                <button class="w-full px-4 py-2 bg-secondary text-primary rounded-lg 
-                                            transform transition duration-300 hover:from-mustard hover:to-mustard-dark 
-                                            hover:shadow-lg focus:ring-2 focus:ring-mustard focus:ring-opacity-50">
-                                    S'inscrire au cours
-                                </button>
-                            </div>
-                        </div>
-
-                    
+                        <?php endforeach ?>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <!-- MES COURS END -->
+                 
                 <!-- AJOUTER COURS START -->
-                <div class="hidden max-w-3xl mx-auto bg-gray-200 p-6 rounded-lg shadow-lg mt-10">
+                <div id="add-course" class=" content-div hidden max-w-3xl mx-auto bg-gray-200 p-6 rounded-lg shadow-lg mt-10">
                     <h1 class="text-2xl font-bold text-primary mb-6 text-center">AJOUTER UN COURS</h1>
                     <form action="../process-course.php" method="POST">
                         <div class="mb-4">
@@ -469,89 +383,162 @@ $tags = Tag::getAllTags();
                     </form>
                 </div>
                 <!-- AJOUTER COURS END -->
-                
-
-                
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                <!-- STATISTIQUES START -->
+                 <div id="statistics" class="content-div hidden">
+                    <h1>page statistiques</h1>
+                 </div>
+                <!-- STATISTIQUES END -->
             </div>
+        </div>
 
 
-</div>
-<script>
-// Burger menus
-document.addEventListener('DOMContentLoaded', function() {
-    // open
-    const burger = document.querySelectorAll('.navbar-burger');
-    const menu = document.querySelectorAll('.navbar-menu');
 
-    if (burger.length && menu.length) {
-        for (var i = 0; i < burger.length; i++) {
-            burger[i].addEventListener('click', function() {
-                for (var j = 0; j < menu.length; j++) {
-                    menu[j].classList.toggle('hidden');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <script>
+        // Burger menus
+        document.addEventListener('DOMContentLoaded', function() {
+            // open
+            const burger = document.querySelectorAll('.navbar-burger');
+            const menu = document.querySelectorAll('.navbar-menu');
+
+            if (burger.length && menu.length) {
+                for (var i = 0; i < burger.length; i++) {
+                    burger[i].addEventListener('click', function() {
+                        for (var j = 0; j < menu.length; j++) {
+                            menu[j].classList.toggle('hidden');
+                        }
+                    });
+                }
+            }
+
+            // close
+            const close = document.querySelectorAll('.navbar-close');
+            const backdrop = document.querySelectorAll('.navbar-backdrop');
+
+            if (close.length) {
+                for (var i = 0; i < close.length; i++) {
+                    close[i].addEventListener('click', function() {
+                        for (var j = 0; j < menu.length; j++) {
+                            menu[j].classList.toggle('hidden');
+                        }
+                    });
+                }
+            }
+
+            if (backdrop.length) {
+                for (var i = 0; i < backdrop.length; i++) {
+                    backdrop[i].addEventListener('click', function() {
+                        for (var j = 0; j < menu.length; j++) {
+                            menu[j].classList.toggle('hidden');
+                        }
+                    });
+                }
+            }
+        });
+        // ----------------------------------------------------------------
+        // Toggle dark mode based on system preference
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.classList.add('dark');
+                }
+
+                // Add hover effect to skill tags
+                const skillTags = document.querySelectorAll('.bg-indigo-100');
+                skillTags.forEach(tag => {
+                    tag.addEventListener('mouseover', () => {
+                        tag.classList.remove('bg-indigo-100', 'text-indigo-800');
+                        tag.classList.add('bg-blue-900', 'text-white');
+                    });
+                    tag.addEventListener('mouseout', () => {
+                        tag.classList.remove('bg-blue-900', 'text-white');
+                        tag.classList.add('bg-indigo-100', 'text-indigo-800');
+                    });
+                });
+        // ----------------------------------------------------------------
+        // Sélectionner tous les boutons avec une classe commune
+        const buttons = document.querySelectorAll('.btn-toggle');
+
+        // Fonction pour afficher une div et cacher les autres
+        function showDiv(targetId) {
+            // Masquer toutes les divs avec une classe commune
+            document.querySelectorAll('.content-div').forEach((div) => {
+                if (div.id === targetId) {
+                    div.classList.remove('hidden');
+                } else {
+                    div.classList.add('hidden');
                 }
             });
         }
-    }
 
-    // close
-    const close = document.querySelectorAll('.navbar-close');
-    const backdrop = document.querySelectorAll('.navbar-backdrop');
-
-    if (close.length) {
-        for (var i = 0; i < close.length; i++) {
-            close[i].addEventListener('click', function() {
-                for (var j = 0; j < menu.length; j++) {
-                    menu[j].classList.toggle('hidden');
-                }
-            });
-        }
-    }
-
-    if (backdrop.length) {
-        for (var i = 0; i < backdrop.length; i++) {
-            backdrop[i].addEventListener('click', function() {
-                for (var j = 0; j < menu.length; j++) {
-                    menu[j].classList.toggle('hidden');
-                }
-            });
-        }
-    }
-});
-// ----------------------------------------------------------------
-// Toggle dark mode based on system preference
-if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        }
-
-        // Add hover effect to skill tags
-        const skillTags = document.querySelectorAll('.bg-indigo-100');
-        skillTags.forEach(tag => {
-            tag.addEventListener('mouseover', () => {
-                tag.classList.remove('bg-indigo-100', 'text-indigo-800');
-                tag.classList.add('bg-blue-900', 'text-white');
-            });
-            tag.addEventListener('mouseout', () => {
-                tag.classList.remove('bg-blue-900', 'text-white');
-                tag.classList.add('bg-indigo-100', 'text-indigo-800');
+        // Ajouter des écouteurs d'événements à chaque bouton
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                // Récupérer l'ID cible depuis un attribut data-target
+                const targetId = button.getAttribute('data-target');
+                showDiv(targetId);
             });
         });
-// ----------------------------------------------------------------
-</script>
-</body>
-</html>
 
+        // Afficher la première div par défaut
+        document.querySelector('.content-div').classList.remove('hidden');
+        
+
+        // Récupérer le bouton, la barre latérale, l'overlay et tous les liens de la barre latérale
+        const sidebarToggle = document.querySelector('[data-drawer-toggle="default-sidebar"]');
+        const sidebar = document.getElementById('default-sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const sidebarLinks = sidebar.querySelectorAll('a'); // Tous les liens dans la barre latérale
+
+        // Fonction pour afficher/masquer la barre latérale et l'overlay
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full'); // Afficher ou cacher la barre latérale
+            overlay.classList.toggle('hidden'); // Afficher ou cacher l'overlay
+        });
+
+        // Masquer la barre latérale en cliquant sur l'overlay
+        overlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full'); // Masquer la barre latérale
+            overlay.classList.add('hidden'); // Masquer l'overlay
+        });
+
+        // Masquer la barre latérale lorsqu'un lien est cliqué
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.add('-translate-x-full'); // Masquer la barre latérale
+                overlay.classList.add('hidden'); // Masquer l'overlay
+            });
+        });
+
+
+        </script>
+    </body>
+</html>

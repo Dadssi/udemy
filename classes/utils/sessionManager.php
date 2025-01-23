@@ -1,19 +1,19 @@
 <?php
 class sessionManager {
     public static function init() {
-        // configuration sécurisée des cookies de session:
+        
         ini_set('session.cookie_httponly', 1);
         ini_set('session.use_only_cookies', 1);
         ini_set('session.cookie_secure', 1);
 
-        // configuration de la durée de vie :
+        
         ini_set('session.gc_maxlifetime', 3600);
         ini_set('session.cookie_lifetime', 0);
 
-        // Démarre la session si ce n'est pas déjà fait:
+       
         self::start();
         
-        // regénère l'ID de session pour plus de sécurité:
+        
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_regenerate_id(true);
         }

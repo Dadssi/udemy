@@ -22,18 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $categories = Category::getAllCategories();
 
-
-
-// Charger toutes les catégories pour affichage
-// try {
-//     $db = Database::getInstance()->getConnection();
-//     $query = $db->prepare("SELECT * FROM categories");
-//     $query->execute();
-//     $categories = $query->fetchAll(PDO::FETCH_ASSOC);
-// } catch (PDOException $e) {
-//     $_SESSION['error'] = "Erreur lors du chargement des catégories : " . $e->getMessage();
-//     $categories = [];
-// }
 ?>
 
 

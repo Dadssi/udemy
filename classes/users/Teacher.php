@@ -1,15 +1,19 @@
 <?php
-require_once '../classes/database/Database.php';
-require_once '../classes/users/User.php';
+// require_once '../classes/database/Database.php';
+// require_once '../classes/users/User.php';
 class Teacher extends User {
     private $ownCourses = [];
     private $isValidated = false;
 
-    public function __construct($email, $password)
-    {
+    public function __construct($email, $password) {
         parent::__construct($email, $password);
         $this->role = 'teacher';
     }
+
+    public function setId($id) {
+        $this->id = $id;
+    }
+    
 
     public function authenticate() {
         $db = Database::getInstance()->getConnection();
@@ -64,6 +68,18 @@ class Teacher extends User {
         ");
         $stmt->execute([$this->id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getCourses() {
+        $db = Database::getInstance()->getConnection();
+        $userId = $_SESSION['user_id'];
+        $stmt = $db->prepare("
+        SELECT *
+        FROM courses
+        WHERE teacher_id = ?
+        ORDER BY created_at DESC");
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>

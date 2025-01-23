@@ -2,14 +2,9 @@
 session_start();
 require_once '../../classes/database/Database.php';
 require_once '../../classes/users/User.php';
-// require_once '../../autoload.php';
-// require_once '../../config/config.php';
-// require_once '../../classes/utils/PageManager.php'
-
-// PageManager::setTitle("Admin-Tableau de bord");
-// PageManager::setDescription("Tableau de Bord de l'Administrateur UDEMY");
-
-// include '../../includes/header.php';
+require_once '../../classes/course/Tag.php';
+require_once '../../classes/course/Course.php';
+require_once '../../classes/utils/Category.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
     header('Location: ../login.php');
@@ -17,6 +12,17 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
 }
 $userId = $_SESSION['user_id'];
 $userInfo = User::getInfoUser($userId);
+
+$categories = Category::getAllCategories();
+
+$tags = Tag::getAllTags();
+
+$courses = Course::getAllCourses();
+foreach($courses as $course) {
+    echo '<pre>';
+    print_r($course) . '<br>';
+    echo '</pre>';
+}
 
 ?>
 <!DOCTYPE html>
@@ -48,10 +54,11 @@ $userInfo = User::getInfoUser($userId);
         .animate-fade-in {
             animation: fadeIn 0.5s ease-out forwards;
         }
-    </style>
+        </style>
         <title>Document</title>
     </head>
     <body>
+        <!-- NAVBAR START -->
         <nav class="relative px-4 py-4 flex justify-between items-center bg-primary">
             <a class="text-3xl font-bold leading-none" href="#">
                 <div class="logo w-1/4">
@@ -136,373 +143,209 @@ $userInfo = User::getInfoUser($userId);
                 </div>
             </nav>
         </div>
-    
-
-<div class="">
-    <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-        <span class="sr-only">Open sidebar</span>
-            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-            </svg>
-    </button>
-
-    <aside id="default-sidebar" class="fixed top-0 left-0 w-72 h-full transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-        <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-primary">
-            <ul class="space-y-2 font-medium">
-                <li>
-                    <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <img src="../assets/imgs/logo.png" alt="logo-udemy">
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="w-5 h-5 text-secondary transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5Zm0 2c-3.315 0-10 1.672-10 5v2h20v-2c0-3.328-6.685-5-10-5Z"/>
+        <!-- NAVBAR END -->
+        <div class="">
+            <!-- SIDEBAR START -->
+            <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                <span class="sr-only">Open sidebar</span>
+                    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                     </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">MON PROFILE</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="flex-shrink-0 w-5 h-5 text-secondary transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                        <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
-                    </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">BIBLIOTHÈQUE DES COURS</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="flex-shrink-0 w-5 h-5 text-secondary transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
-                        <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z"/>
-                        <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z"/>
-                    </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">COURS SUIVIS</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="w-5 h-5 text-secondary transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-                        <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
-                        <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
-                    </svg>
-                    <span class="ms-3">STATISTIQUES</span>
-                    </a>
-                </li>
-                <!-- <li>
-                    <a href="#" class="flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="flex-shrink-0 w-5 h-5 text-secondary transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
-                    </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Inbox</span>
-                    <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
-                    </a>
-                </li> -->
-                
-                <!-- <li>
-                    <a href="#" class="flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="flex-shrink-0 w-5 h-5 text-secondary transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                        <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z"/>
-                    </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Products</span>
-                    </a>
-                </li> -->
-                <li>
-                    <a href="../logout.php" class="flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="flex-shrink-0 w-5 h-5 text-secondary transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
-                    </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Se déconnecter</span>
-                    </a>
-                </li>
-                
-            </ul>
-        </div>
-    </aside>
-    <!-- ------------------------------------------------------------------------------------------------------------- -->
-    <!-- ------------------------------------------------------------------------------------------------------------- -->
-    <!-- ------------------------------------------------------------------------------------------------------------- -->
-    <!-- ------------------------------------------------------------------------------------------------------------- -->
-    <!-- ------------------------------------------------------------------------------------------------------------- -->
-  
-
-    <div class="p-4 sm:ml-72">
-        <!----------------------------->
-        <div class="bg-white dark:bg-primary rounded-xl shadow-2xl w-full p-8 transition-all duration-300 animate-fade-in">
-        <div class="flex flex-col md:flex-row">
-            <div class="md:w-1/3 text-center mb-8 md:mb-0">
-                <img src="../<?php echo htmlspecialchars($userInfo['photo']) ?>" alt="<?php echo htmlspecialchars($userInfo['last_name']) ?>" class="rounded-full w-48 h-48 mx-auto mb-4 border-4 border-indigo-800 dark:border-secondary transition-transform duration-300 hover:scale-105">
-                <h1 class="text-2xl font-bold text-indigo-800 dark:text-white mb-2"><?php echo htmlspecialchars($userInfo['first_name']) ?></h1>
-                <p class="text-gray-600 dark:text-gray-300"><?php echo htmlspecialchars($userInfo['role']) ?></p>
-                <button class="mt-4 bg-indigo-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition-colors duration-300">Modifier Profile</button>
-            </div>
-            <div class="md:w-2/3 md:pl-8">
-                <h2 class="text-xl font-semibold text-indigo-800 dark:text-white mb-4">About Me</h2>
-                <p class="text-gray-700 dark:text-gray-300 mb-6">
-                    Passionate software developer with 5 years of experience in web technologies. 
-                    I love creating user-friendly applications and solving complex problems.
-                </p>
-                <h2 class="text-xl font-semibold text-indigo-800 dark:text-white mb-4">Skills</h2>
-                <div class="flex flex-wrap gap-2 mb-6">
-                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">JavaScript</span>
-                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">React</span>
-                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Node.js</span>
-                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Python</span>
-                    <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">SQL</span>
+            </button>
+            <aside id="default-sidebar" class="fixed top-0 left-0 w-72 h-full z-50 transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+                <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-primary">
+                    <ul class="space-y-2 font-medium">
+                        <li>
+                            <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                <img src="../assets/imgs/logo.png" alt="logo-udemy">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn-toggle flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group" data-target="my-profile">
+                            <svg class="w-5 h-5 text-secondary transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5Zm0 2c-3.315 0-10 1.672-10 5v2h20v-2c0-3.328-6.685-5-10-5Z"/>
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap">MON PROFILE</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn-toggle flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group" data-target="my-courses">
+                            <svg class="flex-shrink-0 w-5 h-5 text-secondary transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                                <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap">BIBLIOTHÈQUE DES COURS</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="btn-toggle flex items-center p-2 text-secondary rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-700 group" data-target="add-course">
+                            <svg class="flex-shrink-0 w-5 h-5 text-secondary transition duration-75  group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
+                                <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z"/>
+                                <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z"/>
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap">MES COURS</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../logout.php" class="flex items-center p-2 text-primary rounded-lg bg-secondary  hover:bg-secondaryhover">
+                            <svg class="flex-shrink-0 w-5 h-5 text-primary transition duration-75 group-hover:text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap">Se déconnecter</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <h2 class="text-xl font-semibold text-indigo-800 dark:text-white mb-4">Contact Information</h2>
-                <ul class="space-y-2 text-gray-700 dark:text-gray-300">
-                    <li class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-800 dark:text-blue-900" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                        </svg>
-                        john.doe@example.com
-                    </li>
-                    <li class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-800 dark:text-blue-900" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                        </svg>
-                        +1 (555) 123-4567
-                    </li>
-                    <li class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-800 dark:text-blue-900" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                        </svg>
-                        San Francisco, CA
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    
-                    <!-- Gestion des utilisateurs-->
-                    <!----------------------------->
-                    <!-- <div id="manage-users" class="section">
-                        <div class="p-6 max-w-6xl mx-auto bg-white rounded-lg shadow-lg my-8">
-                         
-                            <div class="mb-6">
-                                <div class="flex justify-between items-center mb-4">
-                                    <h2 class="text-2xl font-bold text-primary">Gestion des Utilisateurs :</h2>
-                                    <button id="filterToggle" class="flex items-center px-4 py-2 bg-primary hover:bg-primaryhover rounded-lg transition-colors text-secondary">
-                                        <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M3 4h18M3 12h18M3 20h18"></path>
-                                        </svg>
-                                        Filtres
-                                        <svg class="w-4 h-4 ml-2 transform transition-transform duration-200" id="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M6 9l6 6 6-6"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-
-                             
-                                <div class="relative">
-                                    <input
-                                        type="text"
-                                        id="searchInput"
-                                        placeholder="Rechercher un utilisateur..."
-                                        class="w-full px-4 py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    />
-                                    <svg class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <path d="M21 21l-4.35-4.35"></path>
+            </aside>
+            <!-- SIDEBAR END -->
+            <div class="p-4 sm:ml-72">
+                <!-- MON PROFILE START -->
+                <div id="my-profile" class=" content-div hidden bg-white dark:bg-primary rounded-xl shadow-2xl w-full p-8 transition-all duration-300 animate-fade-in">
+                    <div class="flex flex-col md:flex-row">
+                        <div class="md:w-1/3 text-center mb-8 md:mb-0">
+                            <img src="../<?php echo htmlspecialchars($userInfo['photo']) ?>" alt="<?php echo htmlspecialchars($userInfo['last_name']) ?>" class="rounded-full w-48 h-48 mx-auto mb-4 border-4 border-indigo-800 dark:border-secondary transition-transform duration-300 hover:scale-105">
+                            <h1 class="text-2xl font-bold text-indigo-800 dark:text-white mb-2"><?php echo htmlspecialchars($userInfo['first_name']) . ' ' . htmlspecialchars($userInfo['last_name']) ?></h1>
+                            <p class="text-gray-600 dark:text-gray-300">role : <span class="font-semibold"> <?php echo htmlspecialchars($userInfo['role']) ?></span></p>
+                            <button class="mt-4 bg-secondary text-primary px-4 py-2 rounded-lg hover:bg-secondaryhover transition-colors duration-300">Modifier Profile</button>
+                        </div>
+                        <div class="md:w-2/3 md:pl-8">
+                            <h2 class="text-xl font-semibold text-indigo-800 dark:text-white mb-4">A propos :</h2>
+                            <p class="text-gray-700 dark:text-gray-300 mb-6">
+                                Développeur logiciel passionné avec 5 ans d'expérience dans les technologies web. 
+                                J'aime créer des applications conviviales et résoudre des problèmes complexes.
+                            </p>
+                            <h2 class="text-xl font-semibold text-indigo-800 dark:text-white mb-4">Compétences :</h2>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">JavaScript</span>
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">React</span>
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Node.js</span>
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Python</span>
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">SQL</span>
+                            </div>
+                            <h2 class="text-xl font-semibold text-indigo-800 dark:text-white mb-4">Email :</h2>
+                            <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+                                <li class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-800 dark:text-blue-900" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                                     </svg>
-                                </div>
-
-                         
-                                <div class="filter-panel mt-4" id="filterPanel">
-                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                        <select class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                            <option value="">Statut</option>
-                                            <option value="actif">Actif</option>
-                                            <option value="suspendu">Suspendu</option>
-                                        </select>
-                                        
-                                        <select class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                            <option value="">Rôle</option>
-                                            <option value="visitor">Visiteur</option>
-                                            <option value="author">Auteur</option>
-                                            <option value="admin">administrateur</option>
-                                        </select>
-                                        
-                                        <select class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                            <option value="">Nombre d'articles</option>
-                                            <option value="0-5">0-10 articles</option>
-                                            <option value="6-15">11-20 articles</option>
-                                            <option value="15+">20+ articles</option>
-                                        </select>
-                                        
-                                        <select class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                            <option value="">Date d'inscription</option>
-                                            <option value="today">Aujourd'hui</option>
-                                            <option value="week">Cette semaine</option>
-                                            <option value="month">Ce mois</option>
-                                        </select>
-                                    </div>
+                                    <?php echo htmlspecialchars($userInfo['email']) ?>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <?php
+                echo '<pre>';
+                var_dump($courses);
+                echo '</pre>';
+                ?>
+                <!-- MON PROFILE END -->
+                <!-- BIBLIOTHEQUE DES COURS START -->
+                <div id="my-courses" class=" content-div hidden container mx-auto p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <?php foreach ($courses as $course) : ?>
+                        <?php $courseData = $course->toArray(); ?>
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
+                            <div class="relative h-[8%]">
+                                <div class="absolute top-2 right-4 bg-secondary backdrop-blur-sm px-3 py-1 rounded-full shadow-md flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                                    </svg>
+                                    <span class="text-sm font-semibold text-navy">238</span>
                                 </div>
                             </div>
-
-                        
-                            <div class="overflow-x-auto">
-                                <table class="w-full">
-                                    <thead>
-                                        <tr class="bg-secondary">
-                                            <th class="px-6 py-3 text-left text-xs font-semi-bold text-primary uppercase tracking-wider">Utilisateur</th>
-                                            <th class="px-6 py-3 text-left text-xs font-semi-bold text-primary uppercase tracking-wider">Email</th>
-                                            <th class="px-6 py-3 text-left text-xs font-semi-bold text-primary uppercase tracking-wider">Rôle</th>
-                                            <th class="px-6 py-3 text-left text-xs font-semi-bold text-primary uppercase tracking-wider">Statut</th>
-                                            <th class="px-6 py-3 text-left text-xs font-semi-bold text-primary uppercase tracking-wider">Articles</th>
-                                            <th class="px-4 py-3 text-left text-xs font-semi-bold text-primary uppercase tracking-wider">Date d'inscription</th>
-                                            <th class="px-6 py-3 text-left text-xs font-semi-bold text-primary uppercase tracking-wider">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-200" id="userTableBody">
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <div id="updateCategoryModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-                                <div class="bg-white p-6 rounded-lg w-1/2">
-                                    <h2 class="text-xl font-semibold text-center mb-4">Modifier cette catégorie</h2>
-                                   
-                                    <div class="mb-4">
-                                        <label for="categoryName" class="block text-gray-700">Nom de la catégorie</label>
-                                        <input type="text" id="categoryName" class="w-full px-4 py-2 border border-gray-300 rounded" required name="updatedCategoryLabel">
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <button type="button" onclick="closeModal(updateCategoryModal)" class="bg-gray-400 text-white px-2 py-2 rounded hover:bg-gray-500 mx-2">Annuler</button>
-                                        <button type="submit" class="bg-purple-500 text-white px-2 py-2 rounded hover:bg-purple-600">Modifier</button>
-                                    </div>
-                                    </form>
+                            <iframe src='<?php echo htmlspecialchars($courseData['video_url']) ?>'></iframe>
+                            <div class="p-6">
+                                <div class="flex items-start justify-between mb-4">
+                                    <h3 class="text-xl font-bold text-primary truncate"><?php echo htmlspecialchars($courseData['title']) ?></h3>
                                 </div>
-                            </div>
-
-                           
-                            <div class="flex items-center justify-between mt-6">
-                                <div class="text-sm text-gray-700">
-                                    Affichage de 1 à 5 sur 50 résultats
+                                <p class="text-gray-600 text-sm mb-6 line-clamp-2"><?php echo htmlspecialchars($courseData['description']) ?></p>
+                                <div class="flex items-center mb-6">
+                                    <img src="/api/placeholder/32/32" alt="Teacher" class="h-8 w-8 rounded-full ring-2 ring-primary"/>
+                                    <span class="ml-2 text-sm font-medium text-navy">Prof. Sarah Martin</span>
                                 </div>
-                                <div class="flex gap-2">
-                                    <button class="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-50">Précédent</button>
-                                    <button class="px-3 py-1 border border-gray-300 rounded-md bg-blue-500 text-white">1</button>
-                                    <button class="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-50">2</button>
-                                    <button class="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-50">3</button>
-                                    <button class="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-50">Suivant</button>
-                                </div>
+                                <button class="w-full px-4 py-2 bg-secondary text-primary rounded-lg 
+                                            transform transition duration-300 hover:from-mustard hover:to-mustard-dark 
+                                            hover:shadow-lg focus:ring-2 focus:ring-mustard focus:ring-opacity-50">
+                                    S'inscrire au cours
+                                </button>
                             </div>
                         </div>
-                    </div> -->
-        <!-- <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-            <div class="grid grid-cols-4 gap-4 mb-4">
-                <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
+                        <?php endforeach ?>
+                    </div>
                 </div>
-                <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-            </div>
-            <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-                <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                </p>
-            </div>
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-            </div>
-            <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-                <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                </p>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-                <div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-                    <p class="text-2xl text-gray-400 dark:text-gray-500">
-                    <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-                    </svg>
-                    </p>
-                </div>
-            </div>
-        </div> -->
-    </div>
+                <!-- BIBLIOTHEQUE DES COURS END -->
+                <!-- AJOUTER COURS START -->
+                <div id="add-course" class=" content-div hidden max-w-3xl mx-auto bg-gray-200 p-6 rounded-lg shadow-lg mt-10">
+                    <h1 class="text-2xl font-bold text-primary mb-6 text-center">AJOUTER UN COURS</h1>
+                    <form action="../process-course.php" method="POST">
+                        <div class="mb-4">
+                            <label for="course-title" class="block text-primary font-medium mb-2">Titre du cours :</label>
+                            <input type="text" id="course-title" name="course-title" placeholder="Titre du cours" 
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"/>
+                        </div>
+                        <div class="mb-4">
+                            <label for="course-description" class="block text-primary font-medium mb-2">Description du cours :</label>
+                            <textarea id="course-description" name="course-description" placeholder="Description du cours" rows="4" 
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                            </textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label for="content-type" class="block text-primary font-medium mb-2">Type de contenu :</label>
+                            <select id="content-type" name="content-type" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option selected>Choisir type Contenu</option>
+                                <option value="video">VIDEO</option>
+                                <option value="pdf">PDF</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="content-link" class="block text-primary font-medium mb-2">
+                                Lien du contenu :
+                            </label>
+                            <input type="text" id="content-link" name="content-link" placeholder="Lien du contenu" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"/>
+                        </div>
 
+                        <div class="mb-4">
+                            <label for="course-category" class="block text-primary font-medium mb-2">Catégorie du cours</label>
+                            <select 
+                                id="course-category" name="course-category" 
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option selected>CATEGORIE DU COURS</option>
+                                <?php foreach ($categories as $category) : ?>
+                                <option value="<?php echo htmlspecialchars($category['id']) ?></label>"><?php echo htmlspecialchars($category['name']) ?></label></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-primary font-medium mb-2">
+                                Tags :
+                            </label>
+                            <div class="flex flex-wrap gap-3">
+                                <?php foreach ($tags as $tag) : ?>
+                                <label class="flex items-center gap-2 text-gray-600">
+                                <input type="checkbox" name="tags[]" value="tag1" class="h-4 w-4 text-primary border-gray-300 focus:ring-primary"/>
+                                <?php echo htmlspecialchars($tag['name']) ?></label>
+                                <?php endforeach ?>
+                            </div>
+                        </div>
 
-</div>
+                        <!-- Bouton Ajouter -->
+                        <div class="text-center">
+                            <button type="submit" class="px-6 py-3 bg-primary text-white rounded-lg shadow-md hover:bg-secondary hover:shadow-lg transition-all duration-200 ease-in-out transform hover:scale-105">
+                                Ajouter le cours
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- AJOUTER COURS END -->
+                <!-- STATISTIQUES START -->
+                 <div id="statistics" class="content-div hidden">
+                    <h1>page statistiques</h1>
+                 </div>
+                <!-- STATISTIQUES END -->
+            </div>
+        </div>
 <script>
 // Burger menus
 document.addEventListener('DOMContentLoaded', function() {
@@ -563,6 +406,71 @@ if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             });
         });
 // ----------------------------------------------------------------
+// Sélectionner tous les boutons avec une classe commune
+const buttons = document.querySelectorAll('.btn-toggle');
+
+// Fonction pour afficher une div et cacher les autres
+function showDiv(targetId) {
+    // Masquer toutes les divs avec une classe commune
+    document.querySelectorAll('.content-div').forEach((div) => {
+        if (div.id === targetId) {
+            div.classList.remove('hidden');
+        } else {
+            div.classList.add('hidden');
+        }
+    });
+}
+
+// Ajouter des écouteurs d'événements à chaque bouton
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        // Récupérer l'ID cible depuis un attribut data-target
+        const targetId = button.getAttribute('data-target');
+        showDiv(targetId);
+    });
+});
+
+// Afficher la première div par défaut
+document.querySelector('.content-div').classList.remove('hidden');
+// ----------------------------------------------------------------------
+// Récupérer le bouton et la barre latérale
+// const sidebarToggle = document.querySelector('[data-drawer-toggle="default-sidebar"]');
+// const sidebar = document.getElementById('default-sidebar');
+
+// // Fonction pour afficher/masquer la barre latérale
+// sidebarToggle.addEventListener('click', () => {
+//     sidebar.classList.toggle('-translate-x-full'); // Afficher ou cacher la barre latérale
+// });
+
+// ----------------------------------------------------------------------
+
+// Récupérer le bouton, la barre latérale, l'overlay et tous les liens de la barre latérale
+const sidebarToggle = document.querySelector('[data-drawer-toggle="default-sidebar"]');
+const sidebar = document.getElementById('default-sidebar');
+const overlay = document.getElementById('sidebar-overlay');
+const sidebarLinks = sidebar.querySelectorAll('a'); // Tous les liens dans la barre latérale
+
+// Fonction pour afficher/masquer la barre latérale et l'overlay
+sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('-translate-x-full'); // Afficher ou cacher la barre latérale
+    overlay.classList.toggle('hidden'); // Afficher ou cacher l'overlay
+});
+
+// Masquer la barre latérale en cliquant sur l'overlay
+overlay.addEventListener('click', () => {
+    sidebar.classList.add('-translate-x-full'); // Masquer la barre latérale
+    overlay.classList.add('hidden'); // Masquer l'overlay
+});
+
+// Masquer la barre latérale lorsqu'un lien est cliqué
+sidebarLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        sidebar.classList.add('-translate-x-full'); // Masquer la barre latérale
+        overlay.classList.add('hidden'); // Masquer l'overlay
+    });
+});
+
+
 </script>
 </body>
 </html>

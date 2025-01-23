@@ -17,7 +17,7 @@ if (isset($_POST['login'])) {
         exit;
     }
 
-    // Déterminer le rôle de l'utilisateur
+    
     $db = Database::getInstance()->getConnection();
     $stmt = $db->prepare("SELECT role FROM users WHERE email = :email");
     $stmt->bindParam(':email', $email);
@@ -32,7 +32,7 @@ if (isset($_POST['login'])) {
 
     $role = $result['role'];
 
-    // Instancier la classe correspondant au rôle
+    
     $user = null;
     if ($role === 'admin') {
         $user = new Admin($email, $password);
@@ -46,7 +46,7 @@ if (isset($_POST['login'])) {
         exit;
     }
 
-    // Authentification
+   
     $authenticatedUser = $user->authenticate();
 
     if ($authenticatedUser) {
@@ -54,7 +54,7 @@ if (isset($_POST['login'])) {
         $_SESSION['role'] = $authenticatedUser['role'];
         $_SESSION['email'] = $authenticatedUser['email'];
 
-        // Rediriger selon le rôle
+   
         if ($authenticatedUser['role'] === 'admin') {
             header('Location: admin/admin-dashboard.php');
         } elseif ($authenticatedUser['role'] === 'teacher') {

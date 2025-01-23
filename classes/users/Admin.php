@@ -34,8 +34,7 @@ class Admin extends User {
         }
     }
 
-    // -------------------------------------------------------
-     // Méthode pour ajouter une catégorie
+ 
      public function createCategorie($name, $description) {
         $category = new Category($name, $description);
         try {

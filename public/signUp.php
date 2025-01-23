@@ -50,7 +50,6 @@ include '../includes/header.php';
                     <option value="teacher">Enseignant</option>
                     <option value="student">Elève</option>
                 </select>
-                <!-- <i class="fas fa-lock absolute right-3 top-3 text-secondary"></i> -->
             </div>
             <button type="submit" class="w-full bg-secondary hover:bg-secondaryhover text-primary font-bold py-3 px-4 rounded-lg hover:opacity-90 focus:ring-4 focus:ring-purple-300 transition duration-300 transform hover:scale-105">
                 S'inscrire

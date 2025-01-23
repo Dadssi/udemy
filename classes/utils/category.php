@@ -3,7 +3,7 @@ class Category {
     private $id;
     private $name;
     private $description;
-    private $courses = []; // Liste des cours liés à cette catégorie
+    private $courses = []; 
 
     public function __construct($name, $description) {
         $this->name = $name;
@@ -37,7 +37,7 @@ class Category {
     
             $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-            return $categories; // Retourner un tableau contenant toutes les catégories
+            return $categories; 
         } catch (PDOException $e) {
             $_SESSION['error'] = "Erreur lors de la récupération des catégories : " . $e->getMessage();
             return [];

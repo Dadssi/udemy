@@ -19,14 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Vérifier le rôle valide
+   
     if (!in_array($role, ['teacher', 'student'])) {
         $_SESSION['error'] = "Rôle invalide.";
         header('Location: register.php');
         exit;
     }
 
-    // Vérifier si l'email est déjà utilisé
+  
     $db = Database::getInstance()->getConnection();
     $stmt = $db->prepare("SELECT id FROM users WHERE email = :email");
     $stmt->bindParam(':email', $email);
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Vérifier et traiter l'upload de la photo
+   
     $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
     $uploadDir = '../public/assets/imgs/uploads/';
     $photoName = basename($photo['name']);
@@ -52,13 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    if ($photoSize > 2 * 1024 * 1024) { // Limite de 2 Mo
+    if ($photoSize > 2 * 1024 * 1024) { 
         $_SESSION['error'] = "La taille de la photo ne doit pas dépasser 2 Mo.";
         header('Location: register.php');
         exit;
     }
 
-    // Générer un nom unique pour la photo et la déplacer
     $uniquePhotoName = uniqid() . '.' . $photoExtension;
     $photoPath = $uploadDir . $uniquePhotoName;
 
@@ -68,10 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Hasher le mot de passe
+   
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    // Enregistrer l'utilisateur dans la base de données
+    
     $stmt = $db->prepare("INSERT INTO users (first_name, last_name, email, password, role, photo) VALUES (:first_name, :last_name, :email, :password, :role, :photo)");
     $stmt->bindParam(':first_name', $firstName);
     $stmt->bindParam(':last_name', $lastName);
@@ -81,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bindParam(':photo', $photoPath);
 
     if ($stmt->execute()) {
-        // Redirection selon le rôle après inscription réussie
+       
         $_SESSION['success'] = "Inscription réussie ! Vous pouvez maintenant vous connecter.";
 
         if ($role === 'teacher') {
@@ -91,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         exit;
     } else {
-        // Supprimer la photo en cas d'échec de l'insertion
+       
         if (file_exists($photoPath)) {
             unlink($photoPath);
         }

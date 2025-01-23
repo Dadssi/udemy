@@ -1,4 +1,5 @@
 <?php
+require_once 'course.php';
 class VideoCourse extends Course {
     private $videoUrl;
 
@@ -7,31 +8,27 @@ class VideoCourse extends Course {
         $this->videoUrl = $videoUrl;
     }
 
+    public function toArray() {
+        $baseData = parent::toArray();
+        $baseData['type'] = 'video';
+        $baseData['video_url'] = $this->videoUrl;
+        return $baseData;
+    }
+
     public function display() {
-        // Démonstration du polymorphisme : affichage spécifique pour les vidéos
-        $videoId = $this->getYoutubeVideoId($this->videoUrl);
-        
+        $videoId = $this->getYoutubeEmbedUrl($this->videoUrl);
         return "
             <div class='video-course'>
                 <h2>{$this->title}</h2>
-                <div class='video-player'>
-                    <iframe 
-                        width='100%' 
-                        height='400' 
-                        src='https://www.youtube.com/embed/{$videoId}' 
-                        frameborder='0' 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <p>{$this->description}</p>
+                <iframe src='https://www.youtube.com/embed/{$this->videoUrl}'></iframe>
             </div>";
     }
 
-    private function getYoutubeVideoId($url) {
-        $pattern = '/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/';
-        preg_match($pattern, $url, $matches);
-        return isset($matches[1]) ? $matches[1] : '';
+    private function getYoutubeEmbedUrl($url) {
+        parse_str(parse_url($url, PHP_URL_QUERY), $queryParams);
+        return isset($queryParams['v']) ? "https://www.youtube.com/embed/" . $queryParams['v'] : null;
     }
+    
 
     protected function getContent() {
         return [
@@ -39,6 +36,5 @@ class VideoCourse extends Course {
             'content' => null
         ];
     }
-
 }
 ?>

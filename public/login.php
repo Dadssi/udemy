@@ -7,10 +7,7 @@ PageManager::setTitle("Login");
 PageManager::setDescription("page d'authentification à la plateforme Udemy");
 include '../includes/header.php';
 
-// ---------------------------------------
 
-
-// ---------------------------------------
 ?>
 <!DOCTYPE html>
 <html lang="en" >
@@ -57,6 +54,36 @@ include '../includes/header.php';
         </div>
     </section>
     <?php include '../includes/footer.php'; ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     <script>
         gsap.to('.fab', {
             y: -10,
