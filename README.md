@@ -1,99 +1,118 @@
-# udemy
-La plateforme de cours en ligne Udemy vise à révolutionner l’apprentissage en proposant un système interactif et personnalisé pour les étudiants et les enseignants
+# Youdemy - Plateforme de Cours en Ligne
 
-Contexte du projet:
-La plateforme de cours en ligne Youdemy vise à révolutionner l’apprentissage en proposant un système interactif et personnalisé pour les étudiants et les enseignants.
+Youdemy est une plateforme innovante de cours en ligne conçue pour révolutionner l'apprentissage grâce à un système interactif et personnalisé pour les étudiants et les enseignants.
 
-Fonctionnalités principales
-En tant que chef de projet :
-Partie Front Office:
+---
 
-​Visiteur:
+## **Contexte du Projet**
 
-Accès au catalogue des cours avec pagination.
-Recherche de cours par mots-clés.
-Création d’un compte avec le choix du rôle (Étudiant ou Enseignant).
-​
+La plateforme Youdemy vise à offrir une expérience d'apprentissage enrichissante et interactive en intégrant des fonctionnalités avancées adaptées aux besoins des utilisateurs.
 
-Étudiant:
+---
 
-Visualisation du catalogue des cours.
-Recherche et consultation des détails des cours (description, contenu, enseignant, etc.).
-Inscription à un cours après authentification.
-Accès à une section “Mes cours” regroupant les cours rejoints.
-​
+## **Fonctionnalités Principales**
 
-Enseignant:
+### **Partie Front Office**
 
-Ajout de nouveaux cours avec des détails tels que:
-Titre, description, contenu (vidéo ou document), tags, et catégorie.
-Gestion des cours :
-Modification, suppression et consultation des inscriptions.
-Accès à une section “Statistiques” sur les cours:
-Nombre d’étudiants inscrits, Nombre de cours, etc.
-​
+#### **Visiteur**
+- Accès au catalogue des cours avec pagination.
+- Recherche de cours par mots-clés.
+- Création d'un compte avec choix du rôle (Étudiant ou Enseignant).
 
-Partie Back Office:
+#### **Étudiant**
+- Visualisation du catalogue des cours.
+- Recherche et consultation des détails des cours (description, contenu, enseignant, etc.).
+- Inscription à un cours après authentification.
+- Accès à une section "Mes cours" regroupant les cours rejoints.
 
-Administrateur:
+#### **Enseignant**
+- Ajout de nouveaux cours avec les détails suivants :
+  - Titre, description, contenu (vidéo ou document), tags, catégorie.
+- Gestion des cours : modification, suppression et consultation des inscriptions.
+- Accès à une section "Statistiques" sur les cours :
+  - Nombre d’étudiants inscrits, nombre de cours, etc.
 
-Validation des comptes enseignants.
-Gestion des utilisateurs :
-Activation, suspension ou suppression.
-Gestion des contenus :
-Cours, catégories et tags.
-Insertion en masse de tags pour gagner en efficacité.
-Accès à des statistiques globales :
-Nombre total de cours, répartition par catégorie, Le cour avec le plus d' étudiants, Les Top 3 enseignants.
-Fonctionnalités Transversales:
-Un cours peut contenir plusieurs tags (relation many-to-many).
-Application du concept de polymorphisme dans les méthodes suivantes : Ajouter cours et afficher cours.
-Système d’authentification et d’autorisation pour protéger les routes sensibles.
-Contrôle d’accès : chaque utilisateur ne peut accéder qu’aux fonctionnalités correspondant à son rôle.
-​
+### **Partie Back Office**
 
-Exigences Techniques:
-Respect des principes OOP (encapsulation, héritage, polymorphisme).
-Base de données relationnelle avec gestion des relations (one-to-many, many-to-many).
-Utilisation des sessions PHP pour la gestion des utilisateurs connectés.
-Système de validation des données utilisateur pour garantir la sécurité.
-​
+#### **Administrateur**
+- Validation des comptes enseignants.
+- Gestion des utilisateurs : activation, suspension ou suppression.
+- Gestion des contenus : cours, catégories et tags.
+- Insertion en masse de tags pour gagner en efficacité.
+- Accès à des statistiques globales :
+  - Nombre total de cours, répartition par catégorie.
+  - Le cours avec le plus d'étudiants.
+  - Les Top 3 enseignants.
 
-Bonus:
-Recherche avancée avec filtres (catégorie, tags, auteur).
-Statistiques avancées :
-Taux d’engagement par cours, catégories les plus populaires.
-Mise en place d’un système de notification:
-Par exemple, validation de compte enseignant ou inscription confirmée à un cours.
-Implémentation d’un système de commentaires ou d’évaluations sur les cours.
-Génération de certificats PDF de complétion pour les étudiants.
-Modalités pédagogiques
-Version 1 :
+### **Fonctionnalités Transversales**
+- Un cours peut contenir plusieurs tags (relation many-to-many).
+- Application du concept de polymorphisme dans les méthodes : ajout et affichage des cours.
+- Système d’authentification et d’autorisation pour protéger les routes sensibles.
+- Contrôle d'accès : chaque utilisateur accède uniquement aux fonctionnalités correspondant à son rôle.
 
-Travail: individuel
-Durée de travail:
-5 jours Date de lancement du brief: 13/01/2025 à 09:00 am
-Date limite de soumission: 20/01/2025 avant 05:30 pm
-Modalités d'évaluation
-Une durée de 35 min organisée comme suit:
+---
 
-Présenter une défense publique de son travail devant les jurys.
-Chaque apprenants n'aura que ~10 minutes pour Démontrer le contenu et la fonctionnalité du site Web (Démonstration, explication du code source).
-Code Review \ Questions culture Web (10 minutes)
-Mise en situation (15 minutes)
-Livrables
-Lien de Repository Github du projet
-Lien de la présentation.
-Les diagrammes UML
-Diagramme des cas d'utilisations
-Diagramme de classes
-Critères de performance
-La logique métier et votre architecture doivent être clairement séparés.
-Cohérence dans l'application des concepts OOP.
-Amélioration de la structure et de la lisibilité du code.
-Utilisation appropriée des classes, objets, méthodes, etc.
-Les pages web doivent bien s'ajuster à tous les types d'écrans .
-Utilisation de la validation côté client avec HTML5 et JavaScript (Natif) pour minimiser les erreurs avant même la soumission du formulaire.
-Validation côté serveur doit inclure des mesures pour éviter les attaques de type Cross-Site Scripting (XSS) et Cross-Site Request Forgery (CSRF)
-Utilisez des requêtes préparées pour interagir avec la base de données, afin de prévenir les attaques SQL injection.
-Effectuez une validation et une échappement des données d'entrée pour éviter toute injection malveillante.
+## **Exigences Techniques**
+
+- Respect des principes OOP (encapsulation, héritage, polymorphisme).
+- Base de données relationnelle avec gestion des relations (one-to-many, many-to-many).
+- Utilisation des sessions PHP pour la gestion des utilisateurs connectés.
+- Système de validation des données utilisateur pour garantir la sécurité.
+
+---
+
+## **Bonus**
+
+- Recherche avancée avec filtres (catégorie, tags, auteur).
+- Statistiques avancées : taux d'engagement par cours, catégories les plus populaires.
+- Système de notifications : validation de compte enseignant, confirmation d'inscription à un cours.
+- Implémentation d’un système de commentaires ou d'évaluations sur les cours.
+- Génération de certificats PDF de complétion pour les étudiants.
+
+---
+
+## **Modalités Pédagogiques**
+
+- **Travail** : individuel.
+- **Durée de travail** : 5 jours.
+- **Date de lancement** : 13/01/2025 à 09:00 am.
+- **Date limite de soumission** : 20/01/2025 avant 05:30 pm.
+
+---
+
+## **Modalités d'Évaluation**
+
+Durée de 35 minutes organisées comme suit :
+- **Démonstration et défense publique** : ~10 minutes pour présenter le contenu et les fonctionnalités du site web (démonstration + explication du code source).
+- **Code Review & Questions culture web** : 10 minutes.
+- **Mise en situation** : 15 minutes.
+
+---
+
+## **Livrables**
+
+1. Lien du repository GitHub du projet.
+2. Lien de la présentation.
+3. Diagrammes UML :
+   - Diagramme des cas d'utilisation.
+   - Diagramme de classes.
+
+---
+
+## **Critères de Performance**
+
+1. La logique métier et l'architecture doivent être clairement séparées.
+2. Cohérence dans l'application des concepts OOP.
+3. Amélioration de la structure et de la lisibilité du code.
+4. Utilisation appropriée des classes, objets, méthodes, etc.
+5. Les pages web doivent être responsive et adaptées à tous les types d’écrans.
+6. Validation côté client (HTML5 et JavaScript) pour minimiser les erreurs avant la soumission des formulaires.
+7. Validation côté serveur avec des mesures de sécurité :
+   - Protection contre les attaques Cross-Site Scripting (XSS) et Cross-Site Request Forgery (CSRF).
+   - Utilisation de requêtes préparées pour prévenir les attaques SQL injection.
+   - Validation et échappement des données d'entrée.
+
+---
+
+Réalisez une plateforme qui reflète votre expertise et vos compétences en développement web tout en respectant ces directives. Bonne chance !
+
